@@ -35,6 +35,6 @@ a ==> b (*Rechnet a mod b*)
 let f x = let x = 1 in x
 (*Welchen Wert hat wohl b? *)
 let b = f 0
-(*Antwort: *)
+(*Antwort: 1*)
 
 
