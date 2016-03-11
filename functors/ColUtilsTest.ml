@@ -12,7 +12,7 @@ let res = NativeListUtils.filter (fun a -> (a mod 2)=1) e
 let b = res=expected
 let _ = if not b then failwith "Sadly, your filter is broken!"
 
-let e = add "OCaml ist voll supe" empty |> add "whateve"
+let e = add "OCaml ist voll super" empty |> add "whateve"
 let expected = add "whatever" empty |> add "OCaml ist voll super"
 let res = NativeListUtils.for_all (fun a -> a^"r") e
 let b = res=expected && b
