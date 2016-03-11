@@ -17,9 +17,7 @@ end
 module MyList : Collection = struct
         type 'a t = Part of ('a * 'a t) | Tail
         let empty = Tail
-        let add p l = match l with 
-                | Tail -> Part(p, empty)
-                | Part(left,right) -> Part(p,l)
+        let add p l = Part(p,l)
         let rec fold f a = function Tail -> a
                 (*Same thing as fold f (fold f a left) right*)
                 | Part(left, right) -> (f a left |> fold f) right
