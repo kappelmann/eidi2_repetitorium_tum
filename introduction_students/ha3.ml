@@ -31,7 +31,13 @@ module MyList = struct
   (* [f 0; f 1; ...; f (n-1)]. e.g. init 3 (fun x -> Char.chr (x+65)) = ['A'; 'B'; 'C'], [] for n<1 *)
   let init n f = todo ()
   (* reduce f [] = None, reduce f [1] = Some 1, reduce f [1;2;3] = Some (f (f 1 2) 3) *)
-  let reduce f xs = todo ()
+  let reduce f xs = match xs with [] -> None
+        | x::xs -> Some (fold_left f x xs)
+
+  let rec reduce f = function [] -> None
+        | x::[] -> Some x
+        | x::y::xs -> reduce f ((f x y)::xs)
+
   (* maximum element of a list. e.g. max_el [2;1;3] = Some 3, max_el [] = None *)
   let max_el xs = todo ()
   (* min_max [] = None, min_max [2;4;1;2] = (1,4) *)

@@ -47,3 +47,24 @@ let ergebnis = "Student EIDI2 du Hallo"
 let ergebnis = fold_right (fun s a -> s^" "^a) "" mystring
 let ergebnis = "Hallo du EIDI2 Student"
 
+(*ChuChu Zug und rekursive Datentypen*)
+type farbe = Gruen | Rot | Blau | Lilablassblau
+
+type 'a option = Some of 'a | None
+
+(*Erinnerung: Rekursive Datentypen*)
+(*Beispiel für einen Zug*)
+type 'a train = Lok of ('a * 'a train) | Waggon of ('a * 'a train) | Ende
+
+let chuchu = Lok (1,Waggon(2,Ende))
+')')'
+type farbe = Gruen | Rot | Blau | Lilablassblau
+
+type 'a option = Some of 'a | None
+
+(*Erinnerung: Rekursive Datentypen*)
+(*Beispiel für einen Zug*)
+type 'a train = Lok of ('a * 'a train) | Waggon of ('a * 'a train) | Ende
+
+let chuchu = Lok (1,Waggon(2,Ende))
+
