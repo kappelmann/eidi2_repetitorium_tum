@@ -1,8 +1,9 @@
 open Tree
 let todo _ = failwith "Ups, there is still something not implemented."
 
-(*A binary tree that also stores information in its inner nodes.
- * The key and the value are equal.*)
+(*A binary search tree that only stores information in its inner nodes. Leafs are empty.
+ * The key and the value are equal. Smaller values are stored in the left child, greate values
+ * in the right child*)
 module BinTree : Tree = struct
         type 'a t = todo
         let empty = todo 
