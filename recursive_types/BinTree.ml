@@ -8,8 +8,9 @@ module BinTree : Tree = struct
         let to_list t = let rec create t xs = match t with Leaf -> xs
                 | Node (v,l,r) -> create l (v::xs) |> create r
                 in create t []
-                (*let rec to_list t = match t with Leaf -> []*)
-                (*)| Node(v,l,r) -> to_list l @ [v] @ to_list r*)
+                (*let rec to_list t = match t with Leaf -> []
+                  	| Node(v,l,r) -> to_list l @ [v] @ to_list r*)
+	(*Duplicate values should not be inserted!*)
         let rec add p t = match t with Leaf -> Node(p,Leaf,Leaf)
                 | Node(v,l,r) -> if(v=p) then t else if p<v then Node(v,add p l,r)
                         else Node(v,l,add p r)
