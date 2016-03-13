@@ -42,14 +42,14 @@ module MyList = struct
   let only_even = todo
   let fold_left f a = todo
 
-  let mystring = ["Hallo";"du";"EIDI2";"Student"] 
+  (*let mystring = ["Hallo";"du";"EIDI2";"Student"] 
   let ergebnis = fold_left (fun a s -> a^" "^s) "" mystring
   let ergebnis = "Hallo du EIDI2 Student"
 
   let ergebnis = fold_right (fun s a -> a^" "^s) "" mystring
   let ergebnis = "Student EIDI2 du Hallo"
   let ergebnis = fold_right (fun s a -> s^" "^a) "" mystring
-  let ergebnis = "Hallo du EIDI2 Student"
+  let ergebnis = "Hallo du EIDI2 Student"*)
 
   let fold_right f xs = todo
   let exists p = todo
