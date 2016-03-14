@@ -1,11 +1,12 @@
 type 'a tree = Leaf of 'a | Node of ('a tree * 'a tree)
 
-let min t = let open Event in let open Thread in 
-        let rec search c = function Leaf v -> sync(send c v)
-                | Node(l,r) -> let (lc,rc) = (new_channel (),new_channel ()) in 
-                        let _ = (create (search lc) l, create (search rc) r) in
-                        let (lv,rv) = (sync(receive lc), sync(receive rc)) in
-                        sync(send c (if lv<rv then lv else rv))
-        in
-        let c = new_channel () in 
-        let _ = create (search c) t in sync(receive c)
+let rec min t = 
+        let open Event in let open Thread in
+        let help c t = sync(send c (min t)) in
+        match t with Leaf v -> v
+        |Node (l,r) -> let (cl,cr) = new_channel() in
+                        let _ = Thread.create (help cl) l in
+                        let _ = Thread.create (help cr) r in
+                        let lv = sync(receive cl) in
+                        let rv = sync(receive cr) in
+                        if lv<rv then lv else rv
