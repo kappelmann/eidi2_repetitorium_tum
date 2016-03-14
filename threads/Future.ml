@@ -2,7 +2,7 @@ open Event
 
 type 'a t = 'a channel
 let create f v = let c = new_channel() in
-        let calc v = sync(send c (f v)) in
+        let rec calc v = sync(send c (f v)); calc v in
         let _ = Thread.create calc v in
         c
         
