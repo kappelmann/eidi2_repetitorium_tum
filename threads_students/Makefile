@@ -4,5 +4,8 @@ tree:
 future:
 	ocamlc -o future.out -thread -I +threads unix.cma threads.cma Future.mli Future.ml FutureTest.ml
 
+wrapselect:
+	ocamlc -o wrapselect.out -thread -I +threads unix.cma threads.cma WrapSelect.mli WrapSelect.ml
+
 clean:
 	rm *.cmo *.cmi *.out
