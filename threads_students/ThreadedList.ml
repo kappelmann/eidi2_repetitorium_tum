@@ -1,32 +1,47 @@
 let todo _ = failwith "Todo implement"
 
-let c_odd = new_channel ()
-let c_even = new_channel ()
+open Event
+
 (*Creates a thread that filters the list and returns the new filtered list
- *Parameters
+ * Parameters
  * p: predicate for the filter
  * l: the list which should be filtered
  * c: the channel where the value should be returned to
  * returns: unit *)
-let threaded_filter p l c = todo
+let threaded_filter p l c = 
+        let rec filter p = function [] -> []
+               | x::xs -> if p x then x::filter p xs else filter p xs
+        in 
+        let _ = Thread.create (fun () -> sync(send c (filter p l)))() in ()
 
-let odd n = n mod 2 = 1
-let even = not odd
-let _ = threaded_filter odd [1;2;3;4;5] c_odd 
-let _ = threaded_filter even [1;2;3;4;5] c_even
+let print_and_return s = print_string s; s
+let print_and_return s = let _ = print_string s in s
+
+let c_odd = new_channel ()
+let c_even = new_channel ()
+
+let odd n = (n mod 2) = 1
+let even n = not (odd n)
+let l = [1;2;3;4;5]
+let _ = threaded_filter odd l c_odd
+let _ = threaded_filter even l c_even
+let s1 = sync(receive c_odd)
+let s2 = sync(receive c_even)
 (*Der schnellere gewinnt*)
 let s = select [ 
-                wrap(receive c_odd) (fun a -> a)
-                wrap(receive c_even) (fun a -> a)
+                wrap (receive c_odd) (fun a -> ("odd",a)) ;
+                wrap (receive c_even) (fun a -> ("even",a))
                ]
 (*oder äquivalent*)
 let s = choose [ 
-                wrap(receive c_odd) (fun a -> a)
-                wrap(receive c_even) (fun a -> a)
-               ] |> select
+                wrap (receive c_odd) (fun a -> ("odd",a));
+                wrap (receive c_even) (fun a -> ("even",a))
+               ] |> sync
+
+let select y = sync(choose y)
 
 (*Beide Ergebnisse werden empfangen*)
 let s = select [ 
-           wrap(receive c_odd) (fun a -> (a, sync(receive c_even)))
+           wrap(receive c_odd) (fun a -> (a, sync(receive c_even)));
            wrap(receive c_even) (fun a -> (sync(receive c_odd), a))
            ]
