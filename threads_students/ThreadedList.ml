@@ -1,8 +1,9 @@
 let todo _ = failwith "Todo implement"
+
 let c_odd = new_channel ()
 let c_even = new_channel ()
-(*Creates a thread that filters the list and returns the new filtered list*)
-(*Parameters
+(*Creates a thread that filters the list and returns the new filtered list
+ *Parameters
  * p: predicate for the filter
  * l: the list which should be filtered
  * c: the channel where the value should be returned to
