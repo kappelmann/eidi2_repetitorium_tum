@@ -28,6 +28,7 @@ Events:
 open Event
 
 let c = new_channel ()
+(*send und receive blockieren nicht, erst sync blockiert*)
 let a = Thread.create (fun ch -> sync(send ch "hallo")) c
 let s = sync (receive c)
 

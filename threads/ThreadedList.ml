@@ -28,22 +28,3 @@ let _ = threaded_filter odd l c_odd
 let _ = threaded_filter even l c_even
 let s1 = sync(receive c_odd)
 let s2 = sync(receive c_even)
-(*Der schnellere gewinnt*)
-let s = select [ 
-                wrap (receive c_odd) (fun a -> ("odd",a)) ;
-                wrap (receive c_even) (fun a -> ("even",a))
-               ]
-(*oder äquivalent*)
-let s = choose [ 
-                wrap (receive c_odd) (fun a -> ("odd",a));
-                wrap (receive c_even) (fun a -> ("even",a))
-               ] |> sync
-
-(*So ist select im Events module definiert*)
-let select y = sync(choose y)
-
-(*Beide Ergebnisse werden empfangen*)
-let s = select [ 
-           wrap(receive c_odd) (fun a -> (a, sync(receive c_even)));
-           wrap(receive c_even) (fun a -> (sync(receive c_odd), a))
-           ]

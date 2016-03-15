@@ -16,12 +16,12 @@ let b = "OCamlmann"
 let c = a ^ " " ^ b ^ "!"
 
 (*Coole Matching Sachen*)
-(*Direkt auf Tupel matchen*)
 let a = 1::2::3::[]
 let b = "Empty list"
+(*Direkt auf Tupel matchen*)
 match (a,b) with ([],x) -> x
         | (x::xs, _) -> "Nonempty list"
-
+(*when in matches*)
 match a with 
         | x when (x mod 2)=0 -> "gerade"
         | _ -> "ungerade"
