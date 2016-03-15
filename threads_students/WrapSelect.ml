@@ -2,32 +2,16 @@ let todo _ = failwith "TODO something is not implemented"
 
 open Event
 
-let ch_faster e1 e2 = select [e1;e2]
+let ch_faster = todo
 
-let ch_slower e1 e2 = select[
-        wrap e1 (fun _ -> sync e2);
-        wrap e2 (fun _ -> sync e1);
-]
+let ch_slower = todo
 
-let ch_slower c1 c2 = select[
-        wrap (receive c1) (fun _ -> sync(receive c2));
-        wrap (receive c2) (fun _ -> sync(receive c1));
-        ]
-
-let ch_both e1 e2 = select[
-        wrap e1 (fun x -> (x,sync e2));
-        wrap e2 (fun x -> (sync e1,x))
-        ]
+let ch_both  = todo
 
 type w = Send of string
 type r = Fetch | Receive of string
 
-let start_box = let (wc,rc) = (new_channel(),new_channel()) in
-        let rec loop x = select [
-                wrap (receive wc) (fun (Send x) -> todo );
-                receive rc
-        ] 
-        in (wc,rc)
+let start_box = todo
 
 let (wc,rc) = start_box ()
 let print = function Receive a -> print_string a; print_string "\n" 
