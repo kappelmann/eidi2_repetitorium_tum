@@ -15,6 +15,7 @@ let threaded_filter p l c =
         let _ = Thread.create (fun () -> sync(send c (filter p l)))() in ()
 
 let print_and_return s = print_string s; s
+(*Alternative*)
 let print_and_return s = let _ = print_string s in s
 
 let c_odd = new_channel ()
@@ -38,6 +39,7 @@ let s = choose [
                 wrap (receive c_even) (fun a -> ("even",a))
                ] |> sync
 
+(*So ist select im Events module definiert*)
 let select y = sync(choose y)
 
 (*Beide Ergebnisse werden empfangen*)

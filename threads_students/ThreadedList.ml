@@ -1,4 +1,4 @@
-let todo _ = failwith "Todo implement"
+let todo = failwith "Todo implement"
 
 open Event
 
@@ -8,13 +8,10 @@ open Event
  * l: the list which should be filtered
  * c: the channel where the value should be returned to
  * returns: unit *)
-let threaded_filter p l c = 
-        let rec filter p = function [] -> []
-               | x::xs -> if p x then x::filter p xs else filter p xs
-        in 
-        let _ = Thread.create (fun () -> sync(send c (filter p l)))() in ()
+let threaded_filter p l c = todo 
 
 let print_and_return s = print_string s; s
+(*Alternative*)
 let print_and_return s = let _ = print_string s in s
 
 let c_odd = new_channel ()
@@ -27,6 +24,7 @@ let _ = threaded_filter odd l c_odd
 let _ = threaded_filter even l c_even
 let s1 = sync(receive c_odd)
 let s2 = sync(receive c_even)
+
 (*Der schnellere gewinnt*)
 let s = select [ 
                 wrap (receive c_odd) (fun a -> ("odd",a)) ;
@@ -38,6 +36,7 @@ let s = choose [
                 wrap (receive c_even) (fun a -> ("even",a))
                ] |> sync
 
+(*So ist select im Events module definiert*)
 let select y = sync(choose y)
 
 (*Beide Ergebnisse werden empfangen*)

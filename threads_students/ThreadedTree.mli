@@ -1,4 +1,4 @@
-let todo _ = failwith "TODO, implement this awesome thing."
+let todo = failwith "TODO, implement this awesome thing."
 
 (* This tree only stores values in its leaf nodes! Inner nodes just store references to
  * a left and right child. The leaf nodes are not ordered, that means the min. and max. value

@@ -4,9 +4,7 @@ open Collection
 module NativeList : Collection = struct
         type 'a t = 'a list
         let empty = []
-        let add p l = match l with 
-                | [] -> [p]
-                | _ -> p::l
+        let add p l = p::l
         (*Try to use a tail recursive fold version!*)
         let rec fold f a = function [] -> a
                 (*Same thing as fold f (f a x) xs*)

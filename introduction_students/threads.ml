@@ -31,13 +31,15 @@ let c = new_channel ()
 let a = Thread.create (fun ch -> sync(send ch "hallo")) c
 let s = sync (receive c)
 
-(* let s2 = sync (receive c) *)
 (* würde für immer blockieren *)
+(* let s2 = sync (receive c) *)
 
 let _ = print_string s
 
 let c = new_channel ()
 let t1 = Thread.create (fun ch -> sync(send ch "Thread 1")) c
 let t2 = Thread.create (fun ch -> Thread.delay 1; sync(send ch "Thread 2")) c
+(*Zuerst vom schnellern Thread empfangen*)
 let s = sync (receive c)
+(*Aber danach auch vom langsamen Thread*)
 let s = (s, sync(receive c))

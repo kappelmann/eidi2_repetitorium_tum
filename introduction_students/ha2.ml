@@ -94,12 +94,7 @@ module Db = struct
 
   open MyList
   (* find a student by name *)
-  let find_student name = let rec help l = match l with [] -> None
-        | x::xs -> if x.name=name then Some x else help xs in
-        help students
-
-  let find_student name = MyList.filter (fun x -> x.name=name) students |> MyList.head
-
+  let find_student = todo
   (* all averages are of type float option *)
   (* calculate the average age of students that are in a given semester or above *)
   let avg_age = todo
@@ -110,10 +105,5 @@ module Db = struct
   (* calculate the grade average of a course (only passed, i.e. grade <= 4.0) *)
   let avg_grade_course_passed = todo
   (* calculate the grade average of a course for students in a given semester *)
-  let avg_grade_course_semester name t = 
-    let s = filter (fun s -> s.semester=t) students in
-    let g = filter (fun c -> c.course=name) grades in
-    let g = filter (fun c -> exists (fun s -> c.student=s.sname) s) g in
-    let g = map (fun g -> g.grade) g in
-    avgf g
+  let avg_grade_course_semester name t = todo
 end

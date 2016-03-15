@@ -37,7 +37,7 @@ let f x = let x = 1 in x
 let b = f 0
 (*Antwort: 1*)
 
-(*Fold left und right*)
+(*fold left und right*)
 let mystring = ["Hallo";"du";"EIDI2";"Student"] 
 let ergebnis = fold_left (fun a s -> a^" "^s) "" mystring
 let ergebnis = "Hallo du EIDI2 Student"
