@@ -25,3 +25,10 @@ let _ = print a
 let a = receive ()
 (*Should print empty*)
 let _ = print a
+
+(*Nachricht an die Box senden*)
+let _ = sync(send wc (Send "Meine Nachricht"))
+(*Kommando, dass ich eine Nachricht von der Mailbox will*)
+let _ = sync(send rc Fetch)
+(*Und nun kann ich auf die Antwort warten*)
+let _ = match sync(receive rc) with Receive a -> print_string a

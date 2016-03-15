@@ -15,10 +15,10 @@ val ch_both : 'a event -> 'a event -> 'a * 'a
 type w = Send of string
 type r = Fetch | Receive of string
 
-(* Starts a looping thread for a mailbox which saves its messages in a FIFO-queue.
+(* Starts a looping thread for a mailbox which saves its messages in a Stack.
  * Returns two channels which accept Send or Fetch operations respectivly.
  * If a Send call is received, the sent message will be placed in front
- * of the FIFO-queue. If a fetch call is received, the first message
- * of the FIFO-queue will be sent back to the channel with a Receive message.
+ * of the Stack. If a fetch call is received, the first message
+ * of the Stack will be sent back to the channel with a Receive message.
  * If there is no message in the queue, "empty" will be used as a message.*)
 val start_box : unit -> (w channel * r channel)
