@@ -12,6 +12,7 @@ let rec set i v = function [] -> if v<>0 then [(i,v)] else empty
         | (i',v')::xs -> if i'=i then 
                  if v<>0 then (i,v)::xs
                  else xs
+                else if i<i' then (i,v)::(i',v')::xs
                 else (i',v')::set i v xs
 
 let rec mul s v = if s=0 then empty else match v with
