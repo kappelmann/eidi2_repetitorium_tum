@@ -1,10 +1,7 @@
 open Ex4_base
 
 module Lift (B: Base) = struct
-        type 'a t = B.t
-        let empty = B.empty
-        let insert = B.insert
-        let fold = B.fold
+        include B
         let iter f a = fold (fun a b -> f a) a ()
         let map f a = fold (fun a b -> insert (f a) b) a empty
         let filter p a = fold (fun a b -> if p a then insert a b else b) a empty
@@ -39,7 +36,7 @@ module SearchTree = Lift(
         let empty = Empty
         let rec insert a = function Empty -> Node (a,Empty,Empty)
                 | Node(v,l,r) -> if a<v then Node(v,insert a l,r)
-                        else if a>v then Node(v,l,insert a r)
+        else if a>v then Node(v,l,insert a r)
                         else Node(v,l,r)
         let rec fold f x a = match x with Empty -> a
                 | Node(v,l,r) -> fold f r (fold f l (f v a))
