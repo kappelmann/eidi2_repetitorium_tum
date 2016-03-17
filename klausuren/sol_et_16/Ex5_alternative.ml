@@ -1,4 +1,5 @@
 type s = Student of string
+(*Stellt den Typen für Punkte dar*)
 type p = float
 type k = Klausur of s*(p list)
 type g = Eins | Zwei | Drei | Vier | Fuenf
@@ -6,7 +7,7 @@ type g = Eins | Zwei | Drei | Vier | Fuenf
  *Punktelimit zu*)
 type n = Skala of (g*p*p) list
 
-let rec sum_k (Klausur (s,l)) = let rec sum = function 
+let sum_k (Klausur (s,l)) = let rec sum = function 
         | [] -> 0.0
         | x::xs -> x+.sum xs 
         in sum l
@@ -23,4 +24,7 @@ let eval kl n = let open Event in let open Thread in
         let tl = List.map (fun k -> let c = new_channel() 
                 in let _ = Thread.create (calc k) c
                 in wrap_c k c) kl
-        in List.map (fun x -> Event.select tl) tl
+        in List.map (fun _ -> Event.select tl) tl
+        (*Wenn man fälschlicherweise nicht immer sofort den 
+         * schnellsten Tutor bedient*)
+        (*in List.map (fun x -> sync x) tl*)
