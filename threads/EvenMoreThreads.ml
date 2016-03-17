@@ -47,3 +47,13 @@ let tcalc f l = if (length f)<>(length l) then None
                         let _ = Thread.create(sync(send c (f a)))
                         in receive c::create fs xs
         in Some (select (create f l))
+
+let rec tfib = function 0 -> 0
+        | 1 -> 1
+        | n -> let (c1,c2) = (new_channel(),new_channel()) in
+               let csend c n = sync(send c (tfib n)) in
+               let _ = Thread.create (csend c1) (n-1) in
+               let _ = Thread.create (csend c2) (n-2) in
+               let sr c = sync(receive c) in
+               let (v1,v2) = ((sr c1),(sr c2)) in 
+               v1+v2
