@@ -7,5 +7,8 @@ future:
 wrapselect:
 	ocamlc -o wrapselect.out -thread -I +threads unix.cma threads.cma WrapSelect.mli WrapSelect.ml
 
+evenMore:
+	ocamlc -o evenMore.out -thread -I +threads unix.cma threads.cma EvenMoreThreads.mli EvenMoreThreads.ml
+
 clean:
 	rm *.cmo *.cmi *.out
