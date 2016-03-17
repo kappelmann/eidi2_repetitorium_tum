@@ -5,16 +5,21 @@ let compareBy f = comp2 compare f
 let id x = x
 let flip f x y = f y x
 let neg f x = not (f x)
-let curry f x y = f (x,y)
-let uncurry f (x,y) = f x y
+let const x _ = x
 
 module Tuple2 = struct
+  let cons x y = x,y
+  let show f1 f2 (x,y) = "("^f1 x^", "^f2 y^")"
   let fst (x,y) = x
   let snd (x,y) = y
   let map1 f (x,y) = f x, y
   let map2 f (x,y) = x, f y
   let map f1 f2 (x,y) = f1 x, f2 y
+  let swap (x,y) = y,x
+  let curry f x y = f (x,y)
+  let uncurry f (x,y) = f x y
 end
+let curry, uncurry = Tuple2.(curry, uncurry)
 
 module Option = struct
   let some x = Some x (* Option monad's return *)
@@ -28,12 +33,14 @@ module Option = struct
   let map f = function
     | Some x -> Some (f x)
     | None -> None
+  let map_default f x = function
+    | Some v -> f v
+    | None -> x
 
   (* if you have possibly failing functions f1, f2, f3 you can bind them together: f1 x >>= f2 >>= f3. why/when could this be useful? *)
   let bind o f = match o with
     | Some x -> f x
     | None -> None
-  let (>>=) = bind
 
   let filter p = function
     | Some x when p x -> Some x
@@ -42,10 +49,16 @@ module Option = struct
   let default x = function
     | Some y -> y
     | None -> x
-  let (|?) x y = default y x (* Some 1 |? 0 = 1, None |? 0 = 0 *)
 
   let try_some f x = try Some (f x) with _ -> None
+
+  module Infix = struct
+    let (>>=) = bind
+    let (|?) x y = default y x (* Some 1 |? 0 = 1, None |? 0 = 0 *)
+  end
+  include Infix
 end
+include Option.Infix
 
 (* similar to BatteriesExceptionless.List *)
 module List = struct
@@ -155,25 +168,126 @@ module List = struct
     | xs ->
         let xs, ys = split_at (length xs / 2) xs in
         merge ~cmp:cmp (sort ~cmp:cmp xs) (sort ~cmp:cmp ys)
+
+  let show s xs = "[" ^ String.concat ", " (map s xs) ^ "]"
+  let flat_map f xs = flatten @@ map f xs
+  let find_map p l = fold_left (fun a x -> match a with Some e -> Some e | None -> p x) None l
+  let choose = function [] -> None | x :: _ -> Some x
 end
 
 module Set = struct
   type 'a t = 'a list (* this should be abstract in the interface so that one has to use {from,to}_list *)
 
-  (* from_list [1;2;1] = [1;2] *)
-  let rec from_list : 'a list -> 'a t = function
+  (* of_list [1;2;1] = [1;2] *)
+  let rec of_list l : 'a t =
+    let rec doit = function
     | [] -> []
-    | x::xs -> x :: from_list (List.filter ((<>) x) xs)
+    | x::xs -> x :: doit (List.filter ((<>) x) xs) in
+    List.sort l |> doit
   let to_list x = x
   (* union [1;2] [2;3] = [1;2;3] *)
-  let union a b = from_list (a@b)
+  let union a b = of_list (a@b)
   (* inter [1;2] [2;3] = [2] *)
   let inter a b = List.(union (filter (flip mem a) b) (filter (flip mem b) a))
   (* diff [1;2;3] [1;3] = [2] *)
   let diff a b = List.(filter (neg (flip mem b)) a)
+  let fold f x a = to_list a |> List.fold_right f x
+  let map f x = to_list x |> List.map f |> of_list
+  let cardinal x = to_list x |> List.length
+  let is_empty x = cardinal x = 0
+  let mem x s = to_list s |> List.mem x
+  let for_all p s = to_list s |> List.for_all p
+  let exists p s = to_list s |> List.exists p
+  let remove x s = to_list s |> List.filter (fun y -> y <> x) |> of_list
+  let choose s = to_list s |> List.choose
+  let add x s = to_list s |> List.cons x |> of_list
+  let empty = of_list []
+  let find f = List.find f % to_list
 end
 
 module String = struct
   let concat x xs = List.interleave x xs |> List.fold_left (^) ""
   let escaped x = x (* don't care for now *)
+  let explode s = List.init (String.length s) (fun i -> s.[i])
+  let implode l = String.init (List.length l) (Option.get_some % flip List.at l)
+    (*let res = String.create (List.length l) in
+    let rec implode' i = function
+      | [] -> res
+          | c :: l -> res.[i] <- c; implode' (i + 1) l
+    in implode' 0 l*)
+  let cons x xs = implode (x::explode xs) (* this is not very efficient... *)
+  let of_char x = implode [x] (* same *)
+end
+
+module Map = struct
+  (* type ('k,'v) t = ('k*'v) list (* this would not be very efficient *) *)
+  (* implement map as binary trees, since we don't have functors yet, we split up the content and only compare on 'k *)
+  type ('k,'v) t = Empty | Node of 'k * 'v * ('k,'v) t * ('k,'v) t
+
+  open Option
+
+  let empty = Empty
+
+  let rec to_list = function
+    | Empty -> []
+    | Node (k, v, l, r) -> (k,v) :: to_list l @ to_list r
+
+  let show sk sv m = to_list m |> List.map (fun (k,v) -> sk k ^ " -> " ^ sv v) |> String.concat ", " |> fun s -> "{ " ^ s ^ " }"
+
+  let rec add k' v' = function
+    | Empty -> Node (k', v', Empty, Empty)
+    | Node (k, v, l, r) ->
+        let v,l,r = if k'=k then v',l,r else if k'<k then v, add k' v' l, r else v, l, add k' v' r in
+        Node (k, v, l, r)
+
+  let of_list xs = List.fold_left (fun m (k,v) -> add k v m) empty xs
+
+  let rec find k = function
+    | Empty -> None
+    | Node (k', v', l, r) ->
+        if k = k' then Some v'
+        else find k (if k < k' then l else r)
+
+  (* mem k m returns true if m contains a binding for k, and false otherwise *)
+  let mem k = is_some % find k
+
+  (* remove k m returns a map containing the same bindings as m, except the binding for k *)
+  let remove k m = to_list m |> List.remove_first ((=) k % fst) |> of_list
+
+  (* return the smallest binding of the given map *)
+  let rec min = function
+    | Empty -> None
+    | Node (k, v, x, _) -> Some (min x |? (k,v))
+
+  (* return the largest binding of the given map *)
+  let rec max = function
+    | Empty -> None
+    | Node (k, v, _, x) -> Some (max x |? (k,v))
+
+  (* remove k m returns a map containing the same bindings as m, except the binding for k *)
+  let rec remove k = function
+    | Empty -> Empty
+    | Node (k', v', Empty, Empty) when k=k' -> Empty
+    | Node (k', v', Empty, x) when k=k' -> x
+    | Node (k', v', x, Empty) when k=k' -> x
+    | Node (k', v', l, r) when k=k' -> let lk,lv = get_some (max l) in Node (lk, lv, remove lk l, r)
+    | Node (k', v', l, r) -> Node (k', v', remove k l, remove k r)
+
+  (* map f m returns a map with same domain as m, where the associated value a of all bindings of m has been replaced by the result of the application of f to a *)
+  let rec map f = function
+    | Empty -> Empty
+    | Node (k, v, l, r) -> Node (k, f v, map f l, map f r)
+
+  (* filter f m returns the map with all the bindings in m that satisfy predicate f *)
+  let rec filter f m = to_list m |> List.filter f |> of_list
+
+  (* merge f m1 m2 computes a map whose keys are a subset of the union of keys of m1 and of m2. The presence of each such binding, and the corresponding value, is determined with the function f *)
+  (* let a = of_list [1,"a";  2,"b"; 3,"c"] in
+   * let b = of_list [1,1;    2,2;   4,4] in
+   * then merge f a b contains the bindings f 1 (Some "a") (Some 1), f 2 (Some "b") (Some 2), f 3 (Some "c") None, f 4 None (Some 4) that return something *)
+  let rec merge f a b =
+    let open Option in
+    let la = to_list a |> List.filter_map (fun (k,v) -> f k (Some v) (find k b) >>= fun v' -> Some (k,v')) in
+    let lb = to_list b |> List.filter_map (fun (k,v) -> f k (find k a) (Some v) >>= fun v' -> Some (k,v')) in
+    of_list (la @ lb)
 end
