@@ -28,3 +28,10 @@ val tfind : ('a -> bool) -> 'a list list -> 'a option
  *f a und g b und h c und i d und gibt davon das am schnellst reagierendste Ergebnis
  *zurück*)
 val tcalc : ('a -> 'b) list -> 'a list -> 'b option
+
+(*Parallele Berechnung der i-ten Fibonacci-Zahl
+ *tfib 0 = 0
+ *tfib 1 = 1
+ *tfib n = (tfib (n-1)) + (tfib (n-2))
+ *Wobei de rekursive Berechnung immer parallelisiert in zwei neuen Threads passieren soll*)
+val tfib : int -> int
