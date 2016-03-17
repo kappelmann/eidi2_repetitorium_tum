@@ -30,3 +30,20 @@ let rec sum = function [] -> 0
 let avg_tzcount l = let zl = length l in
         let el = tmap zcount l in
         (float_of_int(sum el)) /. ((float_of_int)zl)
+
+let rec find p = function [] -> None
+        | x::xs -> if p x then (Some x) else find p xs
+
+let tfind p l = let fl = tmap (find p) l in 
+        let rec find_some = function [] -> None
+                | x::xs -> if x<>None then x else find_some xs
+        in find_some et
+
+let tcalc f l = if (length f)<>(length l) then None
+        else if f=[] then None
+        else let create f l = match (f,l) with
+                | ([],[]) -> []
+                | (f::fs, x::xs) -> let c = new_channel () in
+                        let _ = Thread.create(sync(send c (f a)))
+                        in receive c::create fs xs
+        in Some (select (create f l))
