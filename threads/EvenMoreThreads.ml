@@ -46,10 +46,10 @@ let tfind p l = let fl = tmap (find p) l in
 
 let tcalc f l = if (length f)<>(length l) then None
         else if f=[] then None
-        else let create f l = match (f,l) with
+        else let rec create f l = match (f,l) with
                 | ([],[]) -> []
                 | (f::fs, x::xs) -> let c = new_channel () in
-                        let _ = Thread.create(sync(send c (f a)))
+                        let _ = Thread.create (fun x -> sync(send c (f x))) x
                         in receive c::create fs xs
         in Some (select (create f l))
 
