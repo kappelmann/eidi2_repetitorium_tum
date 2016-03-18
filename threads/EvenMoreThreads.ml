@@ -20,6 +20,10 @@ let select_last el = let l = length el in
                 if i=l then res else help (i+1)
         in help 1
 
+(*in den integer sind immer die belegten Plätze angegeben*)
+type w = Waggon of int * w | End
+type z = Zug of int * w
+
 let zcount (Zug(i',wl)) = match wl with 
         | End -> i'
         | Waggon(i,wl) -> i+zcount (Zug (i',wl))
