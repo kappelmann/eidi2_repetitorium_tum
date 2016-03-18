@@ -6,7 +6,7 @@ open Event
 let rec map f = function [] -> []
         | x::xs -> f x::map f xs
 
-let rec tmap f l = let rec help = function [] -> []
+let tmap f l = let rec help = function [] -> []
         | x::xs -> let c = new_channel ()
           in let _ = Thread.create (fun c -> sync(send c (f x))) c 
           in (receive c)::help xs
@@ -38,7 +38,10 @@ let avg_tzcount l = let zl = length l in
 let rec find p = function [] -> None
         | x::xs -> if p x then (Some x) else find p xs
 
-(*Bessere Lösung wäre mit select*)
+(*Nicht ganz perfekt, da man auf alle Threads warten muss. 
+ *Wenn man allerdings das Ergebnis des schnellsten Threads direkt 
+ *verwendet, terminieren die anderen Threads nie, da ihr sync(send) nie
+ *einen Empfänger findet.*)
 let tfind p l = let fl = tmap (find p) l in 
         let rec find_some = function [] -> None
                 | x::xs -> if x<>None then x else find_some xs
