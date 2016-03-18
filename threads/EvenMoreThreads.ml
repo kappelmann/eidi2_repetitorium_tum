@@ -38,10 +38,11 @@ let avg_tzcount l = let zl = length l in
 let rec find p = function [] -> None
         | x::xs -> if p x then (Some x) else find p xs
 
+(*Bessere Lösung wäre mit select*)
 let tfind p l = let fl = tmap (find p) l in 
         let rec find_some = function [] -> None
                 | x::xs -> if x<>None then x else find_some xs
-        in find_some et
+        in find_some fl
 
 let tcalc f l = if (length f)<>(length l) then None
         else if f=[] then None
