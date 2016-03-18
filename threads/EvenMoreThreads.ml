@@ -6,10 +6,10 @@ open Event
 let rec map f = function [] -> []
         | x::xs -> f x::map f xs
 
-let tmap f l = let rec help = function [] -> []
+let rec tmap f l = let rec help = function [] -> []
         | x::xs -> let c = new_channel ()
-          in let _ = create (fun c -> sync(send c (f x))) c 
-          in (receive c)::tmap f xs
+          in let _ = Thread.create (fun c -> sync(send c (f x))) c 
+          in (receive c)::help xs
         in map sync (help l)
 
 let rec length = function [] -> 0
