@@ -16,7 +16,7 @@ let rec length = function [] -> 0
         | _::xs -> 1+length xs
 
 let select_last el = let l = length el in
-        let help i = let res = select el in
+        let rec help i = let res = select el in
                 if i=l then res else help (i+1)
         in help 1
 
@@ -24,7 +24,7 @@ let select_last el = let l = length el in
 type w = Waggon of int * w | End
 type z = Zug of int * w
 
-let zcount (Zug(i',wl)) = match wl with 
+let rec zcount (Zug(i',wl)) = match wl with 
         | End -> i'
         | Waggon(i,wl) -> i+zcount (Zug (i',wl))
 
