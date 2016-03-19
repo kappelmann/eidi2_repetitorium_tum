@@ -16,7 +16,7 @@ val zcount : z -> int
  *Die Plätze in jedem Zug sollen parallel gezählt werden*)
 val avg_tzcount : z list -> float
 
-(*Sucht parallel in einer Liste von Listen nach einem Element, dass
+(*Sucht parallel in einer Liste von Listen nach einem Element, das
  *das übergebene Prädikat erfüllt.
  *Beispiel: tfind (a mod 2 =0) [[1;3;5];[(-1);3;11;8;11]] = Some 8
  *          tfind (a mod 2 =0) [[1;3;5];[(-1);3;11;11]] = None *)
