@@ -66,6 +66,12 @@ let (==>) a b = a mod b
 (*Jetzt kann man schreiben:*)
 a ==> b (*Rechnet a mod b*)
 
+(*Inline Funktionen*)
+(fun x -> x+1)
+(*Anwendung:*)
+let a f x = f x
+a (fun x -> x*2) 4 (*Gibt als Ergebnis 8*)
+
 (*Was passiert hier denn?!*)
 let f x = let x = 1 in x
 (*Welchen Wert hat wohl b? *)
