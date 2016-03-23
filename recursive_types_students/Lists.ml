@@ -1,5 +1,5 @@
 open Collection
-let todo _ = failwith "Ups, there is still something not implemented."
+let todo  = failwith "Ups, there is still something not implemented."
 
 (*An implementation that uses the list implementation provided by OCaml*)
 module NativeList : Collection = struct
