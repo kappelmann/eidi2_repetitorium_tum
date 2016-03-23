@@ -17,6 +17,6 @@ module MyList : Collection = struct
         let empty = Tail
         let add p l = Part(p,l)
         let rec fold f a = function Tail -> a
-                (*Same thing as fold f (fold f a left) right*)
+                (*Same thing as fold f (f a left) right*)
                 | Part(left, right) -> (f a left |> fold f) right
 end
