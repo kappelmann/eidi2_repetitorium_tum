@@ -8,16 +8,16 @@ Thread.create t [1;2;3]
 oder
 Thread.create (fold (fun a x -> a+x) 0) [1;2;3]
 
-Aufgabe
-1) Funktion, die eine int liste nimmt und alle Elemente auf die Konsole
-   ausgibt
-2) Nebenläufig die Funktion 1) in einen Thread ausführen
+(*Aufgaben
+* 1) Funktion, die eine int liste nimmt und alle Elemente auf die Konsole
+* ausgibt
+* 2) Nebenläufig die Funktion 1) in einen Thread ausführen
+* Printen: print_string, print_int, print_float ....*)
 
-Printen: print_string, print_int, print_float ....
-
+(*Loesung fuer Aufgabe 1*)
 let rec f = function [] -> print_string "\n"
 	| x::xs -> print_int x ; print_string ", "; f xs
-
+(*Loesung fuer Aufgabe 2*)
 let _ = Thread.create f [1;2;3]
 
 Kompilieren:

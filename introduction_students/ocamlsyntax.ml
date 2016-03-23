@@ -97,4 +97,3 @@ type 'a option = Some of 'a | None
 type 'a train = Lok of ('a * 'a train) | Waggon of ('a * 'a train) | Ende
 
 let chuchu = Lok (1,Waggon(2,Ende))
-
