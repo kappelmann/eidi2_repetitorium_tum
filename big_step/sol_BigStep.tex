@@ -9,20 +9,20 @@
 \usepackage{geometry}
 \geometry{inner=2.0cm,outer=2cm,top=2.5cm,bottom=2.5cm,head=28pt}
 
+\setlength{\parskip}{2em}
 
 \begin{document}
 
 \small
 
 (*0*)
-
 \[
 \inferrule* [left=Op]
   {4 \Rightarrow 4 \\ 5 \Rightarrow 5 \\ 4+5 \Rightarrow 9}
   {4+5 \Rightarrow 9}
 \]
 
-Axiome $v \Rightarrow v$ werde ich in ab hier weglassen
+Axiome $v \Rightarrow v$ werde ich in ab hier meistens weglassen
 
 
 \[
@@ -41,7 +41,6 @@ Axiome $v \Rightarrow v$ werde ich in ab hier weglassen
 
 
 (*1*)
-
 \[
 \inferrule* [left=App]
   {
@@ -85,5 +84,87 @@ Axiome $v \Rightarrow v$ werde ich in ab hier weglassen
 	}
   {diff\ 3\ 2\Rightarrow 1}
 \]
+
+
+(*2*)
+\tiny
+\[
+\inferrule* [left=App]
+  {
+		\inferrule* [left=App]
+			{
+				\inferrule* [left=GD]
+					{diff = fun\ x \rightarrow fun\ y \rightarrow x-y}
+					{diff \Rightarrow fun\ x \rightarrow fun\ y \rightarrow x-y}
+				\\
+				\inferrule* [left=App]
+					{
+						\inferrule* [left=GD]
+							{f = fun\ x \rightarrow 2*x}
+							{f \Rightarrow fun\ x \rightarrow 2*x}
+						\\
+						\inferrule* [left=Op]
+							{2*5 \Rightarrow 10}
+							{2*5 \Rightarrow 10}
+					}
+					{f\ 5\Rightarrow 10}
+			}
+			{diff\ (f\ 5)\Rightarrow fun\ y \rightarrow 10-y}
+		\\
+		\inferrule* [left=Op]
+			{10-5 \Rightarrow 5}
+			{10-5 \Rightarrow 5}
+	}
+  {diff\ (f\ 5)\ 5\Rightarrow 5}
+\]
+
+\[
+\inferrule* [left=LD]
+  {
+		5 \Rightarrow 5 \\
+		\inferrule* [left=App]
+			{
+				\inferrule* [left=GD]
+					{g = fun\ x \rightarrow x-1}
+					{g \Rightarrow fun\ x \rightarrow x-1}
+				\\
+				\inferrule* [left=App]
+					{
+						\inferrule* [left=GD]
+							{f = fun\ x \rightarrow 2*x}
+							{f \Rightarrow fun\ x \rightarrow 2*x}
+						\\
+						\inferrule* [left=Op]
+							{2*5 \Rightarrow 10}
+							{2*5 \Rightarrow 10}
+					}
+					{f\ 5\Rightarrow 10}
+				\\
+				\inferrule* [left=Op]
+					{10-1 \Rightarrow 9}
+					{10-1 \Rightarrow 9}
+			}
+			{g\ (f\ 5)\Rightarrow 9}
+	}
+  {\texttt{let x = 5 in g (f x)} \Rightarrow 9}
+\]
+
+\small
+\[
+\inferrule* [left=LD]
+  {
+		\inferrule* [left=App]
+			{
+				\texttt{fun a -> a+1} \Rightarrow \texttt{fun a -> a+1}
+				\\
+				\inferrule* [left=Op]
+					{2+1 \Rightarrow 3}
+					{2+1 \Rightarrow 3}
+			}
+			{\texttt{(fun a -> a+1) 2}\Rightarrow 3}
+	}
+  {\texttt{let fa = fun a -> a+1 in fa 2} \Rightarrow 3}
+\]
+
 
 \end{document}
