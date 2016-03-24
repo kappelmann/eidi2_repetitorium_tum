@@ -2,7 +2,7 @@ let todo = failwith "Todo implement"
 
 open Event
 
-(*Creates a thread that filters the list and returns the new filtered list
+(*Creates a thread that filters the list and returns the new filtered list on the given channel
  * Parameters
  * p: predicate for the filter
  * l: the list which should be filtered
