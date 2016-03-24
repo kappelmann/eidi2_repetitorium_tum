@@ -1,9 +1,11 @@
-Thread.create <function> <parameter für function> und gibt eine Threadid zurück, d.h.:
-('a -> 'b) -> 'a -> t
+(*
+ * Thread.create <function> <parameter für function> 
+ * und gibt eine Threadid zurück, d.h.:*)
+(*)('a -> 'b) -> 'a -> t*)
 
 Thread.create (fun x -> x+1) 10
 
-let t = fold (fun a x -> a+x) 0
+let t = fold_left (fun a x -> a+x) 0
 Thread.create t [1;2;3]
 oder
 Thread.create (fold (fun a x -> a+x) 0) [1;2;3]
@@ -20,17 +22,22 @@ let rec f = function [] -> print_string "\n"
 (*Loesung fuer Aufgabe 2*)
 let _ = Thread.create f [1;2;3]
 
-Kompilieren:
-ocamlc -o test.out -thread -I +threads unix.cma threads.cma <deinProgramm>
+(*Kompilieren:*)
+(*ocamlc -o test.out -thread -I +threads unix.cma threads.cma <deinProgramm>*)
 
-Events:
+(*Events:*)
 
 open Event
 
-let c = new_channel ()
+let ch = new_channel ()
+let _ = Thread.create (fun c -> sync(send c 10)) ch
+let e = receive ch
+let e = sync e
+let _ = print_int e
+let ch = new_channel ()
 (*send und receive blockieren nicht, erst sync blockiert*)
-let a = Thread.create (fun ch -> sync(send ch "hallo")) c
-let s = sync (receive c)
+let a = Thread.create (fun ch -> sync(send ch "hallo")) ch
+let s = sync (receive ch)
 
 (* würde für immer blockieren *)
 (* let s2 = sync (receive c) *)
