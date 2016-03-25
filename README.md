@@ -3,7 +3,7 @@ This repository is intended for the EIDI2 review course 2016 at the Technical Un
 
 ###Contact
 kevin.kappelmann@tum.de
-@mentions 
+
 ###Thanks to 
 * Daniel Schubert
   * big_step/BigStep
