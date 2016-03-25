@@ -1,8 +1,7 @@
 1) Verifikation
 
-	a) Falsch
-	true ist die schwächste Zusicherung. Falsch schließt nämlich alles aus und ist somit
-	sogar die stärkste Zusicherung
+	a) Richtig
+	False schließt alles aus und ist somit die stärkste Zusicherung.
 
 	b) Falsch
 	x<0 ist eine schwächere Zusicherung als x<-1
@@ -18,7 +17,8 @@
 
 	e) Richtig
 	Eine Schleifeninvariante muss vor dem ersten Betreten, vor jedem weiteren Betreten
-	und vor Verlassen der Schleife gelten. Da x immer größer als y ist und sich dies in der Schleife nicht ändert, ist die Invariante gültig.
+	und vor Verlassen der Schleife gelten. Da am Anfang y<x, bei Betreten der Schleife
+	y<x und nach dem letzten Schleifendurchlauf y=x gilt, ist die Invariante y<=x gültig.
 
 2) OCaml <3
 
