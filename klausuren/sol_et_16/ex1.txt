@@ -13,7 +13,7 @@
 	Zum Beweis muss die lokale Konsistenz gezeigt werden
 
 	d) Richtig
-	Es gilt: A^B => C ≡ not(ccA^B) v C ≡ not(A) v not(B) v C
+	Es gilt: A^B => C ≡ not(A^B) v C ≡ not(A) v not(B) v C
 		≡ not(A) v (B => C) ≡ A => (B => C)
 
 	e) Richtig
