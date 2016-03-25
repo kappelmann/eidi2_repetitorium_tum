@@ -1,8 +1,6 @@
-
-(* BigStep: Beweise die Aussage! *)
+(* By Daniel Schubert *)
+(* BigStep: Beweise die Aussage *)
 (* Die Aufgaben sind in Schwierigkeitsgrade eingeteilt*)
-
-
 
 let f = fun x -> 2*x
 let g = fun x -> x-1
@@ -14,7 +12,6 @@ let rec map = fun f -> fun x -> match x with
 let rec init = fun x -> match x with
     | 0 -> []
     | x -> x :: init (x-1)
-
 
 (* 0 *)
 4+5 => 9
@@ -36,4 +33,4 @@ let x = 3 in let x = fun x -> x in x 2 => 2
 init 3 => [3;2;1]
 
 (* 6 *)
-map double (init 3) => [6;4;2] (*Achtung, diese Aufgabe braucht verdammt viel Platz*)
+map double (init 3) => [6;4;2]
