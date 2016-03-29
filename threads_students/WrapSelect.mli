@@ -10,7 +10,7 @@ val ch_slower : 'a event -> 'a event -> 'a
  * The result of the first event should be stored in the first
  * value of the result tuple, the result of the second event
  * in the second value of the result tuple.*)
-val ch_both : 'a event -> 'a event -> 'a * 'a
+val ch_both : 'a event -> 'b event -> 'a * 'b
 
 type w = Send of string
 type r = Fetch | Receive of string

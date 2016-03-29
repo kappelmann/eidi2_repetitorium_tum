@@ -13,8 +13,6 @@ type r = Fetch | Receive of string
 
 let start_box = todo
 
-
-
 (*Tests*)
 let (wc,rc) = start_box ()
 let print = function Receive a -> print_string a; print_string "\n" 
