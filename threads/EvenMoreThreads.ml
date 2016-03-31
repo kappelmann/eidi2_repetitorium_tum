@@ -15,7 +15,7 @@ let tmap f l = let rec help = function [] -> []
 let rec length = function [] -> 0
         | _::xs -> 1+length xs
 
-let select_last el = let l = length el in
+let select_slowest el = let l = length el in
         let rec help i = let res = select el in
                 if i=l then res else help (i+1)
         in help 1

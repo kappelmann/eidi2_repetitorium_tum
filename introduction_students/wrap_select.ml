@@ -1,4 +1,4 @@
-(*Select nimmt das schneller Event von einer Liste aus Events
+(*Select nimmt das schnellste Event von einer Liste aus Events
  * val select : 'a event list -> 'a *)
 let faster = select [e1;e2]
 (* val choose : 'a event list -> 'a event*)

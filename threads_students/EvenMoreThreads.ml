@@ -2,7 +2,7 @@ let todo = failwith "Todo not implemented"
 
 let tmap = todo
 
-let select_last = todo
+let select_slowest = todo
 
 (*in den integer sind immer die belegten Plätze angegeben*)
 type w = Waggon of int * w | End
