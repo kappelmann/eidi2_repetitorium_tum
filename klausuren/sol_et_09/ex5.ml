@@ -27,15 +27,9 @@ module AddMulExpr (X : AddMul ) = struct
                 | _ -> e
 
         let rec subst s n e = match e with
-                | Mul(Var l, Var r) -> if l=s && r=s then Mul(n,n)
-                        else if l=s then Mul(n, Var r)
-                        else if r=s then Mul(Var l, n)
-                        else e
-                | Add(Var l, Var r) -> if l=s && r=s then Add(n,n)
-                        else if l=s then Add(n, Var r)
-                        else if r=s then Add(Var l, n)
-                        else e
-                | Var v when v=s -> n
+		| Var v when v=s -> n
+		| Mul(l,r) -> Mul(subst s n l, subst s n r)
+                | Add(l,r) -> Add(subst s n l, subst s n r)
                 | _ -> e
 
        let rec simp e = match e with
