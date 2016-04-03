@@ -8,5 +8,6 @@ kevin.kappelmann@tum.de
 * Daniel Schubert
   * big_step/BigStep
   * signatures/more_signatures
+  * http://denkaktiv.de/signatureTraining/
 * Andrea Ascher
   * zusatzaufgaben/Aufgabensammlung-Info-2.pdf
