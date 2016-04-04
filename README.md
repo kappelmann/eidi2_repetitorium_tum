@@ -3,6 +3,7 @@ This repository is intended for the EIDI2 (Einführung in die Informatik 2) revi
 
 ###Contact
 kevin.kappelmann@tum.de
+
 https://kappelmann.me
 
 ###Thanks to 
