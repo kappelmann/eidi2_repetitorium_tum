@@ -1,1 +1,1 @@
-Siehe /threads/Threaded_Tree.ml
+Siehe /sol_threads/Threaded_Tree.ml
