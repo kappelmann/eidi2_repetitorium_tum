@@ -1,6 +1,5 @@
 # EIDI2 Review Course 2016
-This repository is intended for the EIDI2 (Einführung in die Informatik 2) review course 2016 at the Technical University of Munich (TUM).
-Folders with a "sol_" prefix contain the solutions for the respective "students_" folder.
+This repository is intended for the EIDI2 (Einführung in die Informatik 2) review course 2016 at the Technical University of Munich (TUM) and for succeeding terms.
 
 ###Contact
 kevin.kappelmann@tum.de
