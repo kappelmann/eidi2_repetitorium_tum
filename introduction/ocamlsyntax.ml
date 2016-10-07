@@ -23,13 +23,13 @@ let z = let x = 1 in x+1
 (*z hat jetzt den Wert 2, x hat immer noch den Wert 5, denn das innere
  * x ist hier jetzt nicht mehr sichtbar*)
 
-(*Funktion werden genau gleich eingeführt, nur nehmen Funktionen Parameter*)
+(*Funktion werden genau gleich definiert, nur nehmen Funktionen zusätzlich Parameter*)
 let f x = x+1
 (*f ist jetzt eine Funktion, die einen int Parameter nimmt und ein int zurueckgibt*)
 let e = f 3
 (*e hat jetzt den Wert 4*)
 let f a b = a+b
-(*Alternative schreibweise:*)
+(*Alternative Schreibweise:*)
 let f = fun x -> x+1
 
 (*Mehrere Parameter*)
@@ -51,7 +51,7 @@ let b = "Empty list"
 (*Direkt auf Tupel matchen*)
 match (a,b) with ([],x) -> x
         | (x::xs, _) -> "Nonempty list"
-(*when und matches*)
+(*when in matches*)
 match a with 
         | x when (x mod 2)=0 -> "gerade"
         | _ -> "ungerade"

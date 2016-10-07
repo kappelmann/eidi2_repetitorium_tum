@@ -11,10 +11,10 @@ oder
 Thread.create (fold (fun a x -> a+x) 0) [1;2;3]
 
 (*Aufgaben
-* 1) Funktion, die eine int liste nimmt und alle Elemente auf die Konsole
-* ausgibt
-* 2) Nebenläufig die Funktion 1) in einen Thread ausführen
-* Printen: print_string, print_int, print_float ....*)
+ * 1) Funktion, die eine int liste nimmt und alle Elemente auf die Konsole
+ * ausgibt
+ * 2) Nebenläufig die Funktion 1) in einen Thread ausführen.
+ * Print-Funktionen: print_string, print_int, print_float ....*)
 
 (*Loesung fuer Aufgabe 1*)
 let rec f = function [] -> print_string "\n"
@@ -22,7 +22,7 @@ let rec f = function [] -> print_string "\n"
 (*Loesung fuer Aufgabe 2*)
 let _ = Thread.create f [1;2;3]
 
-(*Kompilieren:*)
+(*Kompilieren mit Threadunterstützung:*)
 (*ocamlc -o test.out -thread -I +threads unix.cma threads.cma <deinProgramm>*)
 
 (*Events:*)
