@@ -22,3 +22,5 @@ setup.log
 # owncloud files
 .csync*
 .owncloud*
+
+exams/

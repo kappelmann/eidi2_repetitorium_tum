@@ -1,1 +1,0 @@
-Siehe /sol_math/SparselyPopulatedVector.ml
