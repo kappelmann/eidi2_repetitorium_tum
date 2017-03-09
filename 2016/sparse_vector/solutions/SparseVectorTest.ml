@@ -1,4 +1,4 @@
-open SparselyPopulatedVector
+open SparseVector
 
 let _ = if empty<>[] then failwith "Your empty method is not working correctly"
 let v = [1;2;3;0;1;0;5;(-10)]
@@ -9,7 +9,7 @@ let _ = if not b then failwith "Your sb_vektor method is not working correctly"
 let t = set 3 0 v
 let _ = if t<>v then failwith "Your set method is not working correctly"
 let t = set 3 17 v
-let expected = [(0,1);(1,2);(2,3);(4,1);(6,5);(7,(-10));(3,17)]
+let expected = [(0,1);(1,2);(2,3);(3,17);(4,1);(6,5);(7,(-10))]
 let _ = if t<>expected then failwith "Your set method is not working correctly"
 let t = set 0 0 v
 let expected = [(1,2);(2,3);(4,1);(6,5);(7,(-10))]
