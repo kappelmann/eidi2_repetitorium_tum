@@ -1,5 +1,5 @@
 # EIDI2 Review Course 2016
-This repository is intended for the EIDI2 (Einführung in die Informatik 2) review course 2016 at the Technical University of Munich (TUM) and for succeeding terms.
+This repository is intended for the EIDI2 (Einführung in die Informatik 2) review course 2016 and 2017 at the Technical University of Munich (TUM).
 
 ###Contact
 kevin@kappelmann.me
