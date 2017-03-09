@@ -8,8 +8,8 @@ https://kappelmann.me
 
 ###Thanks to 
 * Daniel Schubert
-  * big_step/exercises/BigStep
-  * signatures/exercises/more_signatures
+  * 2016/big_step/exercises/BigStep
+  * 2016/signatures/exercises/more_signatures
   * http://denkaktiv.de/signatureTraining/
 * Andrea Ascher
-  * additional_exercises/Aufgabensammlung-Info-2.pdf
+  * 2016/additional_exercises/Aufgabensammlung-Info-2.pdf
