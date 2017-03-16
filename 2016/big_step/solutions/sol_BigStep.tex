@@ -1,0 +1,392 @@
+%&PDFLaTeX
+\documentclass[a4paper, 11pt, ngerman]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{hyphenat}
+\usepackage{mathpartir}
+\usepackage{pdflscape}
+
+\usepackage{geometry}
+\geometry{inner=2.0cm,outer=2cm,top=2cm,bottom=2cm,head=28pt}
+
+\setlength{\parskip}{2em}
+
+\begin{document}
+
+\small
+
+(*0*)
+\[
+\inferrule* [left=Op]
+  {4 \Rightarrow 4 \\ 5 \Rightarrow 5 \\ 4+5 \Rightarrow 9}
+  {4+5 \Rightarrow 9}
+\]
+
+Axiome $v \Rightarrow v$ werde ich in ab hier meistens weglassen
+
+
+\[
+\inferrule* [left=App]
+  {
+		\inferrule* [left=GD]
+			{f = fun\ x \rightarrow 2*x}
+			{f \Rightarrow fun\ x \rightarrow 2*x}
+		\\
+		\inferrule* [left=Op]
+			{2*4 \Rightarrow 8}
+			{2*4 \Rightarrow 8}
+	}
+  {f\ 4\Rightarrow 8}
+\]
+
+
+(*1*)
+\[
+\inferrule* [left=App]
+  {
+		\inferrule* [left=GD]
+			{f = fun\ x \rightarrow 2*x}
+			{f \Rightarrow fun\ x \rightarrow 2*x}
+		\\
+		\inferrule* [left=App]
+			{
+				\inferrule* [left=GD]
+					{g = fun\ x \rightarrow x-1}
+					{g \Rightarrow fun\ x \rightarrow x-1}
+				\\
+				\inferrule* [left=Op]
+					{2-1 \Rightarrow 1}
+					{2-1 \Rightarrow 1}
+			}
+			{g\ 2\Rightarrow 1}
+		\\
+		\inferrule* [left=Op]
+			{2*1 \Rightarrow 2}
+			{2*1 \Rightarrow 2}
+	}
+  {f\ (g\ 2)\Rightarrow 2}
+\]
+
+\[
+\inferrule* [left=App]
+  {
+		\inferrule* [left=App]
+			{
+				\inferrule* [left=GD]
+					{diff = fun\ x \rightarrow fun\ y \rightarrow x-y}
+					{diff \Rightarrow fun\ x \rightarrow fun\ y \rightarrow x-y}
+			}
+			{diff\ 3\Rightarrow fun\ y \rightarrow 3-y}
+		\\
+		\inferrule* [left=Op]
+			{3-2 \Rightarrow 1}
+			{3-2 \Rightarrow 1}
+	}
+  {diff\ 3\ 2\Rightarrow 1}
+\]
+
+
+(*2*)
+\tiny
+\[
+\inferrule* [left=App]
+  {
+		\inferrule* [left=App]
+			{
+				\inferrule* [left=GD]
+					{diff = fun\ x \rightarrow fun\ y \rightarrow x-y}
+					{diff \Rightarrow fun\ x \rightarrow fun\ y \rightarrow x-y}
+				\\
+				\inferrule* [left=App]
+					{
+						\inferrule* [left=GD]
+							{f = fun\ x \rightarrow 2*x}
+							{f \Rightarrow fun\ x \rightarrow 2*x}
+						\\
+						\inferrule* [left=Op]
+							{2*5 \Rightarrow 10}
+							{2*5 \Rightarrow 10}
+					}
+					{f\ 5\Rightarrow 10}
+			}
+			{diff\ (f\ 5)\Rightarrow fun\ y \rightarrow 10-y}
+		\\
+		\inferrule* [left=Op]
+			{10-5 \Rightarrow 5}
+			{10-5 \Rightarrow 5}
+	}
+  {diff\ (f\ 5)\ 5\Rightarrow 5}
+\]
+
+\[
+\inferrule* [left=LD]
+  {
+		5 \Rightarrow 5 \\
+		\inferrule* [left=App]
+			{
+				\inferrule* [left=GD]
+					{g = fun\ x \rightarrow x-1}
+					{g \Rightarrow fun\ x \rightarrow x-1}
+				\\
+				\inferrule* [left=App]
+					{
+						\inferrule* [left=GD]
+							{f = fun\ x \rightarrow 2*x}
+							{f \Rightarrow fun\ x \rightarrow 2*x}
+						\\
+						\inferrule* [left=Op]
+							{2*5 \Rightarrow 10}
+							{2*5 \Rightarrow 10}
+					}
+					{f\ 5\Rightarrow 10}
+				\\
+				\inferrule* [left=Op]
+					{10-1 \Rightarrow 9}
+					{10-1 \Rightarrow 9}
+			}
+			{g\ (f\ 5)\Rightarrow 9}
+	}
+  {\texttt{let x = 5 in g (f x)} \Rightarrow 9}
+\]
+
+\small
+\[
+\inferrule* [left=LD]
+  {
+		\inferrule* [left=App]
+			{
+				\texttt{fun a -> a+1} \Rightarrow \texttt{fun a -> a+1}
+				\\
+				\inferrule* [left=Op]
+					{2+1 \Rightarrow 3}
+					{2+1 \Rightarrow 3}
+			}
+			{\texttt{(fun a -> a+1) 2}\Rightarrow 3}
+	}
+  {\texttt{let fa = fun a -> a+1 in fa 2} \Rightarrow 3}
+\]
+
+
+\newpage
+
+\begin{landscape}
+
+(* 3 *)
+
+\tiny
+
+
+\[
+\inferrule* [leftstyle=\tiny,Left=App]
+  {
+		\inferrule* [Left=App]
+			{
+				\inferrule* [Left=GD]
+					{diff = fun\ x \rightarrow fun\ y \rightarrow x-y}
+					{diff \Rightarrow fun\ x \rightarrow fun\ y \rightarrow x-y}
+				\\
+				\inferrule* [Left=App]
+					{
+						\inferrule* [Left=GD]
+							{f = fun\ x \rightarrow 2*x}
+							{f \Rightarrow fun\ x \rightarrow 2*x}
+						\\
+						\inferrule* [Left=Op]
+							{2*5 \Rightarrow 10}
+							{2*5 \Rightarrow 10}
+					}
+					{f\ 5\Rightarrow 10}
+			}
+			{diff\ (f\ 5)\Rightarrow fun\ y \rightarrow 10-y}
+		\\
+		\inferrule* [Left=App]
+			{
+				\inferrule* [Left=GD]
+					{
+						double = f\\
+						\inferrule* [Left=GD]
+							{f = fun\ x \rightarrow 2*x}
+							{f \Rightarrow fun\ x \rightarrow 2*x}
+					}
+					{double \Rightarrow fun\ x \rightarrow 2*x}
+				\\
+				\inferrule* [Left=App]
+					{
+						\inferrule* [Left=GD]
+							{g = fun\ x \rightarrow x-1}
+							{g \Rightarrow fun\ x \rightarrow x-1}
+						\\
+						\inferrule* [Left=Op]
+							{2-1 \Rightarrow 1}
+							{2-1 \Rightarrow 1}
+					}
+					{g\ 2\Rightarrow 1}
+				\\
+				\inferrule* [Left=Op]
+					{2*1 \Rightarrow 2}
+					{2*1 \Rightarrow 2}
+			}
+			{double\ (g\ 2)\Rightarrow 2}
+		\\
+		\inferrule* [Left=Op]
+			{10-2 \Rightarrow 8}
+			{10-2 \Rightarrow 8}
+	}
+  {diff\ (f\ 5)\ (double (g 2))\Rightarrow 8}
+\]
+
+
+\[
+\inferrule* [leftstyle=\tiny,Left=LD]
+  {
+		\inferrule* [Left=App]
+			{
+				\inferrule* [Left=App]
+					{
+						\texttt{(fun x -> fun y -> x + y)} \Rightarrow \texttt{(fun x -> fun y -> x + y)}
+						\\
+						\inferrule* [Left=App]
+							{
+								\inferrule* [Left=App]
+									{
+										\texttt{(fun x -> fun y -> x + y)} \Rightarrow \texttt{(fun x -> fun y -> x + y)}
+										\\
+										5 \Rightarrow 5
+										\\
+										\texttt{fun y -> 5+y} \Rightarrow \texttt{fun y -> 5+y}
+									}
+									{\texttt{(fun x -> fun y -> x + y) 5} \Rightarrow \texttt{fun y -> 5+y}}
+								\\
+								\inferrule* [Left=Op]
+									{5+2 \Rightarrow 7}
+									{5+2 \Rightarrow 7}
+							}
+							{\texttt{(fun x -> fun y -> x + y) 5 2)} \Rightarrow 7}
+					}
+					{\texttt{(fun x -> fun y -> x + y) ((fun x -> fun y -> x + y) 5 2)} \Rightarrow \texttt{fun y -> 7+y}}
+				\\
+				\inferrule* [Left=Op]
+					{7+8 \Rightarrow 15}
+					{7+8 \Rightarrow 15}
+			}
+			{\texttt{(fun x -> fun y -> x + y) ((fun x -> fun y -> x + y) 5 2) 8}\Rightarrow 3}
+	}
+  {\texttt{let fb = fun x -> fun y -> x + y in fb (fb 5 2) 8} \Rightarrow 15}
+\]
+
+
+
+\[
+\inferrule* [leftstyle=\tiny,left=LD]
+  {
+		3 \Rightarrow 3
+		\\
+		\inferrule* [left=LD]
+			{
+				\texttt{(fun x -> x)} \Rightarrow \texttt{(fun x -> x)}
+				\\
+				\inferrule* [left=App]
+					{
+						\texttt{(fun x -> x)} \Rightarrow \texttt{(fun x -> x)}
+						\\
+						2 \Rightarrow 2
+					}
+					{\texttt{(fun x -> x) 2}\Rightarrow 2}
+			}
+			{\texttt{let x = fun x -> x in x 2} \Rightarrow 2}
+	}
+  {\texttt{let x = 3 in let x = fun x -> x in x 2} \Rightarrow 2}
+\]
+
+Sei $e_{match}=\texttt{match x with
+    | 0 -> []
+    | x -> x :: init (x-1)}$
+		
+Sowie $\pi = \inferrule* [rightstyle=\tiny,right=GD]
+									{init = fun\ x \rightarrow e_{match}}
+									{init \Rightarrow fun\ x \rightarrow e_{match}}$
+
+\[
+\inferrule* [leftstyle=\tiny,rightstyle=\tiny,Right=App]
+  {
+		\pi
+		\\
+		\inferrule* [Right=PM]
+			{
+				3 \Rightarrow 3 \equiv x [3/x]
+				\\
+				\inferrule* [Right=L]
+					{
+						3 \Rightarrow 3
+						\\
+						\inferrule* [Right=App]
+							{
+								\pi
+								\\
+								\inferrule* [Left=Op]
+									{3-1 \Rightarrow 2}
+									{3-1 \Rightarrow 2}
+								\inferrule* [Right=PM]
+									{
+										2 \Rightarrow 2 \equiv x [2/x]
+										\\
+										\inferrule* [Right=L]
+											{
+												2 \Rightarrow 2
+												\\
+												\inferrule* [Right=App]
+													{
+														\pi
+														\\
+														\inferrule* [Left=Op]
+															{2-1 \Rightarrow 1}
+															{2-1 \Rightarrow 1}
+														\inferrule* [Right=PM]
+															{
+																1 \Rightarrow 1 \equiv x [1/x]
+																\\
+																\inferrule* [Right=L]
+																	{
+																		1 \Rightarrow 1
+																		\\
+																		\inferrule* [Right=App]
+																			{
+																				\pi
+																				\\
+																				\inferrule* [Left=Op]
+																					{1-1 \Rightarrow 0}
+																					{1-1 \Rightarrow 0}
+																				\inferrule* [Right=PM]
+																					{
+																						0 \Rightarrow 0 \equiv 0
+																						\\
+																						[] \Rightarrow []
+																					}
+																					{e_{match}[0/x] \Rightarrow []}
+																			}
+																			{init\ (1-1) \Rightarrow []}
+																	}
+																	{2\ ::\ init\ (1-1) \Rightarrow [1] \equiv 1 :: []}
+															}
+															{e_{match}[1/x] \Rightarrow [1]}
+													}
+													{init\ (2-1) \Rightarrow [1]}
+											}
+											{2\ ::\ init\ (2-1) \Rightarrow [2;1] \equiv 2 :: [1]}
+									}
+									{e_{match}[2/x] \Rightarrow [2;1]}
+							}
+							{init\ (3-1) \Rightarrow [2;1]}
+					}
+					{3\ ::\ init\ (3-1) \Rightarrow [3;2;1] \equiv 3 :: [2;1]}
+			}
+			{e_{match}[3/x] \Rightarrow [3;2;1]}
+	}
+  {init\ 3 \Rightarrow [3;2;1]}
+\]
+
+
+\end{landscape}
+
+\end{document}
