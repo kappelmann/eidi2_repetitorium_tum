@@ -1,0 +1,31 @@
+Schedule for EIDI2 revision course 2017
+
+Day 1: 
+	* Basics of logic and induction needed for proofs in semantics (basics_logic_induction).
+	* Basics of wp-calculus (wp_calculus)
+Day 2:
+	* Continuation of wp-calculus (proofs for termination)
+
+Day 3: 
+	* OCaml basics (ocaml/bascis)
+	* Tail recursion (ocaml/tail_recursion)
+
+Day 4:
+	* Continuation of tail recursion
+	* Data structures with OCaml (ocaml/data_structures)
+
+Day 5: 
+	* Continuation of data structures
+	* Functors
+
+Day 6: 
+	* Continuation of functors
+	* Threads and channels (ocaml/threading)
+
+Day 7:
+	* Continuation of threads and channels
+	* Big-step proofs (big_step)
+
+Day 8:
+	* Continuation of big-step
+	* Equivalence proofs (equivalence_proofs)
