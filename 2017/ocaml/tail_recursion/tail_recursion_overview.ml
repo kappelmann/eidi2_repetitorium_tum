@@ -8,7 +8,7 @@ let rec fib n = let rec aux_fib n' = if n'=0 then (0,0)
 (* Ein Aufruf von fib 1000000 würde nun 1000000 rekursive Aufrufe benötigen. Da muss jedem
    Informatiker sofort das Herz aufschreien, denn unser Stack würde dann ebenfalls eine Tiefe 
    von mindestens 1000000 benötigen --> Stackoverflow/OutOfMemory exceptions.
-   In imperativen Programmiersprache können wir häufig Rekursion durch Schleife vermeiden.
+   In imperativen Programmiersprachen können wir häufig Rekursion durch Verwendung von Schleifen vermeiden.
    Wie soll das aber in funktionalen Programmiersprachen funktionieren? 
    Die Antwort: Endrekursion. Wir schreiben die fib Funktion so um, dass der letzte Aufruf der Funktion der rekursive Aufruf ist.
    Somit kann der Compiler einfach den aktuellen Stackframe wiederverwenden und muss keinen neuen Rahmen auf den Stack erzeugen
