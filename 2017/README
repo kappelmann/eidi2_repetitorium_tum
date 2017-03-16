@@ -15,17 +15,13 @@ Day 4:
 	* Data structures with OCaml (ocaml/data_structures)
 
 Day 5: 
-	* Continuation of data structures
-	* Functors
-
+	* Functors (ocaml/functors)
+	* Threads and channels (ocaml/threads_channels)
 Day 6: 
-	* Continuation of functors
-	* Threads and channels (ocaml/threading)
-
-Day 7:
-	* Continuation of threads and channels
+	* Continuation of threads and channels (ocaml/threads_channels)
 	* Big-step proofs (big_step)
-
-Day 8:
+Day 7:
 	* Continuation of big-step
 	* Equivalence proofs (equivalence_proofs)
+Day 8:
+	* What you demand! ;)
