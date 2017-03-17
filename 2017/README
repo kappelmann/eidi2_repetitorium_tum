@@ -5,11 +5,9 @@ Day 1:
 	* Basics of wp-calculus (wp_calculus)
 Day 2:
 	* Continuation of wp-calculus (proofs for termination)
-
 Day 3: 
 	* OCaml basics (ocaml/bascis)
 	* Tail recursion (ocaml/tail_recursion)
-
 Day 4:
 	* Continuation of tail recursion
 	* Data structures with OCaml (ocaml/data_structures)
