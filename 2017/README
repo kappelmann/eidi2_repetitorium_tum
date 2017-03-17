@@ -13,7 +13,6 @@ Day 3:
 Day 4:
 	* Continuation of tail recursion
 	* Data structures with OCaml (ocaml/data_structures)
-
 Day 5: 
 	* Functors (ocaml/functors)
 	* Threads and channels (ocaml/threads_channels)
