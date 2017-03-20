@@ -303,7 +303,7 @@ Wir zeigen die Aussage mit Induktion über n. Wir bemerken, dass die Definition 
 HtEfmPg(n)\coloneqq\begin{cases}
 		1, & \text{falls $n=0$}\\
 		2, & \text{falls $n=1$}\\
-	   	2*HtEfmPg(n+1)-HtEfmPg(n)+1, & \text{sonst}
+	   	2*HtEfmPg(n-1)-HtEfmPg(n-2)+1, & \text{sonst}
 	\end{cases}
 \end{equation}
 Zeigen Sie: $HtEfmPg(n)=0.5*(n^2+n+2)$
