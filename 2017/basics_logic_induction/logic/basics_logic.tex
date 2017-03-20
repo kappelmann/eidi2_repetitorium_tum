@@ -1,0 +1,253 @@
+\documentclass[hidelinks]{article}
+\usepackage[ngerman]{babel} 
+\usepackage[utf8x]{inputenc}
+%% Hyperlinks 
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    linktoc=all,
+    urlcolor={blue!80!black}
+}
+%% Graphics
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage{enumerate}
+% Math packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Algorithms
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\newcommand\Let[2]{\State #1 $\gets$ #2}
+\algrenewcomment[1]{\(\qquad \triangleright\) #1}
+\newcommand\Blet[2]{\State \textbf{let} #1 \textbf{be} #2}
+\errorcontextlines\maxdimen
+% begin vertical rule patch for algorithmicx
+% borrowing from http://tex.stackexchange.com/questions/41956/marking-conditional-versions-with-line-in-margin
+% see http://tex.stackexchange.com/questions/110431/ploblems-with-vertical-lines-in-algorithmicx
+\RequirePackage{zref-abspage}
+\RequirePackage{zref-user}
+\RequirePackage{tikz}
+\RequirePackage{atbegshi}
+\usetikzlibrary{calc}
+\RequirePackage{tikzpagenodes}
+\RequirePackage{etoolbox}
+\makeatletter
+\newcommand*\ALG@lastblockb{b}
+\newcommand*\ALG@lastblocke{e}
+\apptocmd{\ALG@beginblock}{%
+    %\typeout{beginning block, nesting level \theALG@nested, line \arabic{ALG@line}}%
+    \ifx\ALG@lastblock\ALG@lastblockb
+        \ifnum\theALG@nested>1\relax\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi{\ALG@tikzborder}{}%
+    \fi
+    \let\ALG@lastblock\ALG@lastblockb%
+}{}{\errmessage{failed to patch}}
+
+\pretocmd{\ALG@endblock}{%
+    %\typeout{ending block, nesting level \theALG@nested, line \arabic{ALG@line}}%
+    \ifx\ALG@lastblock\ALG@lastblocke
+        \addtocounter{ALG@nested}{1}%
+        \addtolength\ALG@tlm{\csname ALG@ind@\theALG@nested\endcsname}%
+        \ifnum\theALG@nested>1\relax\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi{\endALG@tikzborder}{}%
+        \addtolength\ALG@tlm{-\csname ALG@ind@\theALG@nested\endcsname}%
+        \addtocounter{ALG@nested}{-1}%
+    \fi
+    \let\ALG@lastblock\ALG@lastblocke%
+}{}{\errmessage{failed to patch}}
+\tikzset{ALG@tikzborder/.style={line width=0.5pt,black}}
+\newcommand*\currenttextarea{current page text area}
+\newcommand*{\updatecurrenttextarea}{%
+    \if@twocolumn
+        \if@firstcolumn
+            \renewcommand*{\currenttextarea}{current page column 1 area}%
+        \else
+            \renewcommand*{\currenttextarea}{current page column 2 area}%
+        \fi
+    \else
+        \renewcommand*\currenttextarea{current page text area}%
+    \fi
+}
+\newcounter{ALG@tikzborder}
+\newcounter{ALG@totaltikzborder}
+\newenvironment{ALG@tikzborder}[1][]{%
+    % Allow user to overwrite the used style locally
+    \ifx&#1&\else
+        \tikzset{ALG@tikzborder/.style={#1}}%
+    \fi
+    \stepcounter{ALG@totaltikzborder}%
+    \expandafter\edef\csname ALG@ind@border@\theALG@nested\endcsname{\theALG@totaltikzborder}%
+    \setcounter{ALG@tikzborder}{\csname ALG@ind@border@\theALG@nested\endcsname}%
+    %\typeout{begin ALG border nesting level=\theALG@nested, tikzborder=\theALG@tikzborder, tlm=\the\ALG@tlm}%
+    \tikz[overlay,remember picture] \coordinate (ALG@tikzborder-\theALG@tikzborder);% node {\theALG@tikzborder};% Modified \tikzmark macro
+    \zlabel{ALG@tikzborder-begin-\theALG@tikzborder}%
+    % Test if end-label is at the same page and draw first half of border if not, from start place to the end of the page
+    \ifnum\zref@extract{ALG@tikzborder-begin-\theALG@tikzborder}{abspage}=\zref@extract{ALG@tikzborder-end-\theALG@tikzborder}{abspage} \else
+        \updatecurrenttextarea
+        \ALG@drawvline{[shift={(0pt,.5\ht\strutbox)}]ALG@tikzborder-\theALG@tikzborder}{\currenttextarea.south east}{\ALG@thistlm}%
+        % If it spreads over more than two pages:
+        \newcounter{ALG@tikzborderpages\theALG@tikzborder}%
+        \setcounter{ALG@tikzborderpages\theALG@tikzborder}{\numexpr-\zref@extract{ALG@tikzborder-begin-\theALG@tikzborder}{abspage}+\zref@extract{ALG@tikzborder-end-\theALG@tikzborder}{abspage}}%
+        \ifnum\value{ALG@tikzborderpages\theALG@tikzborder}>1
+            \edef\nextcmd{\noexpand\AtBeginShipoutNext{\noexpand\ALG@tikzborderpage{\theALG@tikzborder}{\the\ALG@thistlm}}}%some pages need a border on the whole page
+            \nextcmd
+        \fi
+    \fi
+}{%
+    \setcounter{ALG@tikzborder}{\csname ALG@ind@border@\theALG@nested\endcsname}%
+    %\typeout{end ALG border nesting level=\theALG@nested, tikzborder=\theALG@tikzborder, tlm=\the\ALG@tlm}%
+    \tikz[overlay,remember picture] \coordinate (ALG@tikzborder-end-\theALG@tikzborder);% node {\theALG@tikzborder};% Modified \tikzmark macro
+    \zlabel{ALG@tikzborder-end-\theALG@tikzborder}%
+    % Test if begin-label is at the same page and draw whole border if so, from start place to end place
+    \updatecurrenttextarea
+    \ifnum\zref@extract{ALG@tikzborder-begin-\theALG@tikzborder}{abspage}=\zref@extract{ALG@tikzborder-end-\theALG@tikzborder}{abspage}\relax
+        \ALG@drawvline{[shift={(0pt,.5\ht\strutbox)}]ALG@tikzborder-\theALG@tikzborder}{ALG@tikzborder-end-\theALG@tikzborder}{\ALG@thistlm}%
+    % Otherwise draw second half of border, from the top of the page to the end place
+    \else
+        %\settextarea
+        \ALG@drawvline{\currenttextarea.north west}{ALG@tikzborder-end-\theALG@tikzborder}{\ALG@thistlm}%
+    \fi
+}
+\newcommand*{\ALG@drawvline}[3]{%#1=from, #2=to, #3=value of \ALG@tlm/\ALG@thisthm
+    \begin{tikzpicture}[overlay,remember picture]
+        \draw [ALG@tikzborder]
+            let \p0 = (\currenttextarea.north west), \p1=(#1), \p2 = (#2)
+             in
+            (#3+\fboxsep+.5\pgflinewidth+\x0,\y1+\fboxsep+.5\pgflinewidth)%-\fboxsep-.5\pgflinewidth
+             --
+            (#3+\fboxsep+.5\pgflinewidth+\x0,\y2-\fboxsep-.5\pgflinewidth)
+            %node[midway,anchor=east] {\ALG@tikzbordertext}
+        ;
+    \end{tikzpicture}%
+}
+\newcommand{\ALG@tikzborderpage}[2]{%the whole page gets a border, #1=value of \theALG@tikzborder, #2=value of \ALG@tlm/\ALG@thistlm
+    \updatecurrenttextarea
+    \setcounter{ALG@tikzborder}{#1}%
+    \ALG@drawvline{\currenttextarea.north west}{\currenttextarea.south east}{#2}%
+    \addtocounter{ALG@tikzborderpages\theALG@tikzborder}{-1}%
+    \ifnum\value{ALG@tikzborderpages\theALG@tikzborder}>1
+        \AtBeginShipoutNext{\ALG@tikzborderpage{#1}{#2}}%
+    \fi
+    \vspace{-0.5\baselineskip}% Compensate for the generated extra space at begin of the page. No idea why exactly this happens.
+}
+\def\ALG@tikzbordertext{\the\ALG@tlm}
+\makeatother
+% end vertical rule patch for algorithmicx
+
+% continuation indent patch, slightly extended from http://tex.stackexchange.com/questions/78776/forced-indentation-in-algorithmicx to support multiple paragraphs in one block
+\RequirePackage{etoolbox}
+\makeatletter
+\newlength{\ALG@continueindent}
+\setlength{\ALG@continueindent}{2em}
+\newcommand*{\ALG@customparshape}{\parshape 2 \leftmargin \linewidth \dimexpr\ALG@tlm+\ALG@continueindent\relax \dimexpr\linewidth+\leftmargin-\ALG@tlm-\ALG@continueindent\relax}
+\newcommand*{\ALG@customparshapex}{\parshape 1 \dimexpr\ALG@tlm+\ALG@continueindent\relax \dimexpr\linewidth+\leftmargin-\ALG@tlm-\ALG@continueindent\relax}
+\apptocmd{\ALG@beginblock}{\ALG@customparshape\everypar{\ALG@customparshapex}}{}{\errmessage{failed to patch}}
+\makeatother
+% end continuation indent patch
+\usepackage{mathtools}
+
+% Proof system
+\usepackage{amsthm}
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{bsp}[thm]{Example}
+\newtheoremstyle{rem} % name
+    {\topsep}                    % Space above
+    {\topsep}                    % Space below
+    {}                   % Body font
+    {}                           % Indent amount
+    {\bf}                   % Theorem head font
+    {:}                          % Punctuation after theorem head
+    {.5em}                       % Space after theorem head
+    {}  % Theorem head spec (can be left empty, meaning ‘normal’)
+\theoremstyle{rem}
+\newtheorem*{remark}{Note}
+%\usepackage{xpatch}
+%\makeatletter
+%% Remove last point from definitions, theorems, etc.
+%\xpatchcmd{\@thm}{\thm@headpunct{.}}{\thm@headpunct{\\}}{}{}
+%\makeatother
+
+% Seitenränder
+%originally 1.5 in
+\usepackage[margin=1in]{geometry}
+% citations
+\usepackage{cite}
+% Graphs
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta,positioning}
+\usepackage{tikz-3dplot}
+\usepackage{subfig}
+\usepackage{pgfplots}
+\pgfplotsset{%
+    ,compat=1.12
+    ,every axis x label/.style={at={(current axis.right of origin)},anchor=north west}
+    ,every axis y label/.style={at={(current axis.above origin)},anchor=north east}
+    }
+\setlength{\parindent}{0pt}
+
+% Custom commands
+\newcommand{\fromto}[2]{\{#1,\ldots,#2\}}
+
+\pagestyle{plain}
+
+%------------------------------------------------------------------------------
+\begin{document}
+
+\pagenumbering{arabic}
+
+\begin{sloppypar}
+\begingroup  
+  \LARGE Einführung in die Informatik 2 - Repetitorium WS 2016/17\\Technische Universität München\\[0.5em]
+  \large{Kevin Kappelmann\hfill \today}\\
+\endgroup
+\hrule height 1pt
+{\LARGE{{\begin{center}\textbf{Grundlagen der Logik}\end{center}}}}
+\section{Theorie}
+Zum Start des Repetitoriums werden wir unsere Logikkenntnisse auffrischen. Hierfür zunächst eine Tabelle der wichtigsten Umformungsregeln:
+\begin{figure}[ht]
+	\includegraphics[width=16cm]{../../../equivalence_rules.png}
+	\centering
+\end{figure}
+\\
+Ergänzend seien $F\wedge true\equiv F\equiv F\vee false$ (Identität) und $F\wedge false\equiv false$ bzw. $F\vee true\equiv true$ (Dominanz) genannt.\\
+Da fragt sich vielleicht manch einer: Was war denn nochmal der Unterschied zwischen diesem '$\equiv$' und einem '$=$'? Hierfür müssen wir uns an die zwei Begriffe \textbf{Syntax} und \textbf{Semantik} erinnern:
+\begin{itemize}
+\item \underline{Syntax:} Die Syntax beschäftigt sich mit der Grammatik und daraus resultierender Wohlgeformtheit von Zeichenketten. Beispielsweise erlaubt es uns die Grammatik der Aussagenlogik die Zeichenkette $A \wedge B$ als (syntaktisch korrekte) Formel zu bezeichnen. Die Zeichenkette $A\rightarrow B \vee$ hingegen ist keine Formel. Besteht zwischen zwei Formeln F und G eine syntaktische Gleichheit (d.h.\ Gleichheit auf Zeichenebene), so wird dies durch $F=G$ gekennzeichnet. Beispielsweise gilt $A\wedge B=A\wedge B$ und $A \wedge B \neq B \wedge A$.
+\underline{Achtung:} ``='' ist nicht immer gleich ``=''. In der Arithmetik gilt beispielsweise $1+2=3$. Mit ``='' ist dort als semantische Gleichheit zu verstehen.
+\item \underline{Semantik:} Die Semantik beschäftigt sich mit der Bedeutung von Zeichenketten. Zwei Formeln F und G sind semantisch äquivalent, wenn sie sich für jede zu beiden passenden Belegung zum selben Wert auswerten. In diesem Fall schreiben wir $F\equiv G$. Als ergänzendes Beispiel zur Tabelle oben sei $x>41\equiv x\ge42$ genannt.\\
+Um zu zeigen, dass zwei Formeln F und G semantisch äquivalent sind, können wir Äquivalenzregeln verwenden und versuchen F und G ineinander zu überführen oder, falls der Wertebereich der Formeln endlich ist, eine Wahrheitstabelle aufstellen und die Gleichheit überprüfen.
+\end{itemize}
+Besonders wichtig in der Beweisführung ist der Implikationsoperator $\rightarrow$. Wir betrachten die Wahrheitstabelle des binären Operators:
+\begin{figure}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+  \hline
+  A & B & $A\rightarrow B$\\\hline
+  0 & 0 & 1\\\hline
+  0 & 1 & 1\\\hline
+  1 & 0 & 0\\\hline
+  1 & 1 & 1\\\hline
+\end{tabular}
+\end{figure}
+\\ Betrachten wir eine Formel $A\rightarrow B$, so wird A als \textbf{Prämisse} und B als \textbf{Konklusion} bezeichnet.\\
+\textbf{Merke:} Ist die Prämisse falsch, so ist die Implikation wahr. Ist die Konklusion wahr, so ist die Implikation ebenfalls wahr. Der einzig interessante Fall ist der, in dem die Prämisse wahr und die Konklusion falsch ist. Deswegen wird bei Beweisen von Implikationen stets die Prämisse als wahr angenommen und dann untersucht, ob die Konklusion ebenfalls wahr ist. Dies werden wir vor allem bei der Berechnung und Verifizierung von Weakest-Preconditions später benötigen.\\
+\section{Übungen}
+Semester 2016/17
+\begin{itemize}
+\item Blatt 1: Aufgabe 1, (2), 5, 6
+\item Blatt 2: Aufgabe 1, 4, 5
+\end{itemize}
+Semester 2015/16
+\begin{itemize}
+\item Blatt 2: Aufgabe 1
+\end{itemize}
+\end{sloppypar}
+\end{document}
