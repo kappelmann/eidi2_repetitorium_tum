@@ -24,7 +24,7 @@ setup.log
 .owncloud*
 
 exams/
-additional_exercises/
+#additional_exercises/
 
 ## Core latex/pdflatex auxiliary files:
 *.lvimrc
