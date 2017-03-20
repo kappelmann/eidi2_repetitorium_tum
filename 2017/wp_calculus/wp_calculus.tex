@@ -324,35 +324,36 @@ Wir tun so, als hätten wir keine gute Vermutung und schreiben uns den Programma
 Vor allem die Zustände am Punkt I sind für uns interessant. Wir erkennen, dass zum Punkt I stets $s=\sum_{k=0}^{i-1}k$, also auch $s=0.5*(i-1)*(i)$ gilt (Bemerkung: $\sum_{k=0}^{-1}k=0$, da 0 das neutrale Element der Addition ist).\\
 Mit dieser Erkenntnis und der Berücksichtigung der weiteren Tipps, setzen wir
 \begin{equation*}
-I\coloneqq s=\frac{(i-1)*i}{2}\wedge 0\le i\le x+1
+I\coloneqq s=\frac{(i-1)*i}{2}\wedge 0\le i
 \end{equation*}
-Nun gilt es, unsere Invariante zu verifizieren. Hierfür beginnen wir von I und laufen rückwärts einmal die ganze Schleife entlang.
+Es gilt jedoch nicht $0\le x$, denn der Benutzer könnte eine negative Zahl eingeben. Nun gilt es, unsere Invariante zu verifizieren. Hierfür beginnen wir von I und laufen rückwärts einmal die ganze Schleife entlang.
 \begin{align*}
-WP\llbracket i=i+1;\rrbracket(I)&\equiv s=\frac{i*(i+1)}{2}\wedge 0\le i+1\le x+1\\
-&\equiv s=\frac{i*(i+1)}{2}\wedge -1\le i\le x\\
-&\Leftarrow s=\frac{i*(i+1)}{2}\wedge 0\le i\le x\eqqcolon E\\
+WP\llbracket i=i+1;\rrbracket(I)&\equiv s=\frac{i*(i+1)}{2}\wedge 0\le i+1\\
+&\equiv s=\frac{i*(i+1)}{2}\wedge -1\le i\\
+&\Leftarrow s=\frac{i*(i+1)}{2}\wedge 0\le i \eqqcolon E\\
 \end{align*}
 Hier haben wir im letzten Schritt unsere Zusicherung verstärkt, d.h.\ strikter gemacht. Dies kann manchmal hilfreich sein, um Terme zu vereinfachen. Wir haben es hier gemacht, da wir uns sicher sind, dass der Fall $i=-1$ nie auftritt und werfen daher diese Information weg. Wir können unsere Annahmen immer strikter machen als die berechnete Vorbedingung. Wir müssen dabei immer sicher gehen, dass die Implikation gültig ist, d.h.\ in unserem Fall muss immer, wenn E erfüllt ist, auch die ursprünglich berechnete Vorbedingung erfüllt sein (vgl. Blatt ``Grundlagen der Logik''). Wenn unsere Annotation die berechnete Zusicherung impliziert, nennen wir die Annotation \textbf{konsistent}.\\
 Wir rechnen weiter
 \begin{align*}
-WP\llbracket s=s+i;\rrbracket(E)\quad&\equiv s+i=\frac{i*(i+1)}{2}\wedge 0\le i\le x\\
-\text{\small{(Gaußsche Summenformel, $0\le i$)}}\quad&\equiv s=\frac{(i-1)*i}{2}\wedge 0\le i\le x\eqqcolon D\\
-WP\llbracket i\le x;\rrbracket(F,D)\quad&\equiv (i>x \wedge s=\frac{x*(x+1)}{2})\vee (s=\frac{(i-1)*i)}{2}\wedge 0\le i\le x)\\
-&\Leftarrow (i=x+1 \wedge s=\frac{x*(x+1)}{2})\vee (s=\frac{(i-1)*i}{2}\wedge 0\le i\le x)\\
-&\equiv (i=x+1 \wedge s=\frac{(i-1)*i}{2})\vee (s=\frac{(i-1)*i}{2}\wedge 0\le i\le x)\\
-&\equiv s=\frac{(i-1)*i}{2}\wedge(i=x+1 \vee 0\le i\le x)\\
-&\equiv s=\frac{(i-1)*i}{2}\wedge 0\le i\le x+1\equiv I
+WP\llbracket s=s+i;\rrbracket(E)\quad&\equiv s+i=\frac{i*(i+1)}{2}\wedge 0\le i\\
+\text{\small{(Gaußsche Summenformel, $0\le i$)}}\quad&\equiv s=\frac{(i-1)*i}{2}\wedge 0\le i\eqqcolon D\\
+WP\llbracket i\le x;\rrbracket(F,D)\quad&\equiv (i>x \wedge s=\frac{x*(x+1)}{2})\vee (s=\frac{(i-1)*i)}{2}\wedge 0\le i)\\
+&\Leftarrow (i=x+1 \wedge s=\frac{x*(x+1)}{2})\vee (s=\frac{(i-1)*i}{2}\wedge 0\le i)\\
+&\equiv (i=x+1 \wedge s=\frac{(i-1)*i}{2})\vee (s=\frac{(i-1)*i}{2}\wedge 0\le i)\\
+&\equiv s=\frac{(i-1)*i}{2}\wedge(i=x+1 \vee 0\le i)\\
+&\Leftarrow s=\frac{(i-1)*i}{2}\wedge 0\le i\equiv I
 \end{align*}
-Unsere Schleife ist also lokal konsistent annotiert! Bemerke, wie wir schrittweise die beiden Oder-Bedingungen auf eine gemeinsame Form gebracht haben, um dann mit Distributivität die Gemeinsamkeit auszuklammern und so schrittweise sich der Invariante I zu nähern. Jetzt sind wir fast fertig, wir müssen nur noch sequentiell zum Start zurückrechnen.
+Unsere Schleife ist also lokal konsistent annotiert! Bemerke, wie wir schrittweise die beiden Oder-Bedingungen auf eine gemeinsame Form gebracht haben, um dann mit Distributivität die Gemeinsamkeit auszuklammern und so schrittweise sich der Invariante I zu nähern.
+Im vorletzten Schritt haben wir unsere Aussage verstärkt, indem wir eine Und-Klausuel hinzugefügt haben und im letzten Schritt haben wir sie verstärkt, indem wir eine Oder-Klausel entfernt haben. Jetzt sind wir fast fertig, wir müssen nur noch sequentiell zum Start zurückrechnen.
 \begin{align*}
-WP\llbracket s=i;\rrbracket(I)&\equiv i=\frac{(i-1)*i}{2}\wedge 0\le i\le x+1\eqqcolon C\\
-WP\llbracket i=0;\rrbracket(C)&\equiv 0=\frac{(0-1)*0}{2}\wedge 0\le x+1\coloneqq B\\
-WP\llbracket x=read();\rrbracket(B)&\equiv \forall x.\ 0\le x+1\eqqcolon A
+WP\llbracket s=i;\rrbracket(I)&\equiv i=\frac{(i-1)*i}{2}\wedge 0\le i\eqqcolon C\\
+WP\llbracket i=0;\rrbracket(C)&\equiv 0=\frac{(0-1)*0}{2}\wedge 0\le 0\equiv true\eqqcolon B\\
+WP\llbracket x=read();\rrbracket(B)&\equiv \forall x.\ true\equiv true\eqqcolon A
 \end{align*}
 \end{proof}
-Wir haben somit bewiesen, dass alle Annotationen lokal konsistent sind, falls $0\le x+1$ gilt, d.h.\ wir müssen zum Start des Programmes sicher stellen, dass $0\le x+1$ gilt. Im Fall von $x<0$ erreichen wir den Stopknoten nie, da das Programm offensichtlich nicht terminiert.
-\subsubsection{Lieber ein Ende mit Schrecken als ein Schrecken ohne Ende}
-Wir sind noch nicht ganz zufrieden mit unserem ersten Beweis und wollen uns zusätzlich vergewissern, in welchen Fällen das Programm auch wirklich terminiert und dann die Zusicherung am Ende des Programmes erfüllt. Wir vermuten, dass dies für alle $x\ge 0$ der Fall ist.\\
+Wir haben somit bewiesen, dass alle Annotationen lokal konsistent sind. Insbesondere gilt $A\equiv true$, d.h.\ wir müssen keine Bedingung zum Start des Programmes stellen. Aber halt: Für $x<0$ sollten die Zusicherungen am Endknoten doch nicht erfüllt sein?! Nicht ganz, die Zusicherungen gelten nur, wenn der Programmpunkt auch wirklich erreicht wird. Im Fall von $x<0$ erreichen wir aber den Stopknoten nie, da das Programm offensichtlich nicht terminiert. Alle erreichbaren Annotation sind allerdings auch für $x<0$ konsistent (das haben wir schließlich bewiesen).
+ \subsubsection{Lieber ein Ende mit Schrecken als ein Schrecken ohne Ende}
+ Wir sind also nicht ganz zufrieden mit unserem ersten Beweis und wollen uns zusätzlich vergewissern, in welchen Fällen das Programm auch wirklich terminiert und dann die Zusicherung am Ende des Programmes erfüllt. Wir vermuten, dass dies für alle $x\ge 0$ der Fall ist.
 \begin{proof}
 Zunächst fügen wir die eine Variable r in unser Programm ein, die wir für den Terminierungsbeweis benötigen. Was das Programm berechnet, ist uns für den Terminierungsbeweis egal, das haben wir schließlich schon bewiesen. Uns ist nur wichtig, dass die Programmpunkte F und G erreichbar sind und setzen deshalb möglichst einfach $F\coloneqq true\eqqcolon G$. Achtung: $F\coloneqq false\eqqcolon G$ wäre falsch. Wird an einem Punkt false annotiert und dessen Konsistenz bewiesen, muss der Punkt unerreichbar sein.\\
 Als Schleifeninvariante setzen wir
