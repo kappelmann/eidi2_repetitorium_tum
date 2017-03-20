@@ -345,12 +345,12 @@ WP\llbracket i\le x;\rrbracket(F,D)\quad&\equiv (i>x \wedge s=\frac{x*(x+1)}{2})
 \end{align*}
 Unsere Schleife ist also lokal konsistent annotiert! Bemerke, wie wir schrittweise die beiden Oder-Bedingungen auf eine gemeinsame Form gebracht haben, um dann mit Distributivität die Gemeinsamkeit auszuklammern und so schrittweise sich der Invariante I zu nähern. Jetzt sind wir fast fertig, wir müssen nur noch sequentiell zum Start zurückrechnen.
 \begin{align*}
-WP\llbracket s=i;\rrbracket(I)&\equiv i=\frac{(i-1)*i}{2}\wedge 0\le i\le i+1\equiv i=\frac{(i-1)*i}{2}\wedge 0\le i\eqqcolon C\\
-WP\llbracket i=0;\rrbracket(C)&\equiv 0=\frac{(0-1)*0}{2}\wedge 0\le 0\equiv true\coloneqq B\\
-WP\llbracket x=read();\rrbracket(B)&\equiv \forall x.\ true\equiv true\eqqcolon A
+WP\llbracket s=i;\rrbracket(I)&\equiv i=\frac{(i-1)*i}{2}\wedge 0\le i\le x+1\eqqcolon C\\
+WP\llbracket i=0;\rrbracket(C)&\equiv 0=\frac{(0-1)*0}{2}\wedge 0\le x+1\coloneqq B\\
+WP\llbracket x=read();\rrbracket(B)&\equiv \forall x.\ 0\le x+1\eqqcolon A
 \end{align*}
 \end{proof}
-Wir haben somit bewiesen, dass alle Annotationen lokal konsistent sind. Insbesondere gilt $A\equiv true$, d.h.\ wir müssen keine Bedingung zum Start des Programmes stellen. Aber halt: Für $x<0$ sollten die Zusicherungen am Endknoten doch nicht erfüllt sein?! Nicht ganz, die Zusicherungen gelten nur, wenn der Programmpunkt auch wirklich erreicht wird. Im Fall von $x<0$ erreichen wir aber den Stopknoten nie, da das Programm offensichtlich nicht terminiert. Alle erreichbaren Annotation sind allerdings auch für $x<0$ konsistent (das haben wir schließlich bewiesen).
+Wir haben somit bewiesen, dass alle Annotationen lokal konsistent sind, falls die $0\le x+1$, d.h.\ wir müssen Bedingung zum Start des Programmes sicher stellen, dass $0\le x+1$ gilt. Für $x<0$ sollten die Zusicherungen am Endknoten aber nicht erfüllt sein. Dies ist möglich, da die Zusicherungen nur gelten müssen, wenn der Programmpunkt auch wirklich erreicht wird. Im Fall von $x<0$ erreichen wir aber den Stopknoten nie, da das Programm offensichtlich nicht terminiert. Alle erreichbaren Annotation sind allerdings auch für $x<0$ konsistent (das haben wir schließlich bewiesen).
 \subsubsection{Lieber ein Ende mit Schrecken als ein Schrecken ohne Ende}
 Wir sind also nicht ganz zufrieden mit unserem ersten Beweis und wollen uns zusätzlich vergewissern, in welchen Fällen das Programm auch wirklich terminiert und dann die Zusicherung am Ende des Programmes erfüllt. Wir vermuten, dass dies für alle $x\ge 0$ der Fall ist.\\
 \begin{proof}
