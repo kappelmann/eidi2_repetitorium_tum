@@ -297,7 +297,7 @@ Wir zeigen die Aussage mit Induktion über n. Wir bemerken, dass die Definition 
 
 \section{Übungen}
 \begin{itemize}
-\item Ein kleiner Gauß ist zu wenig! Zeigen Sie: $\sum_{i=0}^{n}i^2=\frac{n*(n+1)(2*n+1)}{6}$
+\item Ein kleiner Gauß ist zu wenig! Zeigen Sie: $\sum_{i=0}^{n}i^2=\frac{n*(n+1)*(2*n+1)}{6}, \forall n\in\mathbb{N}_0$
 \item DS-Flashbacks: Die Anzahl der Holztüren Eiche fundiert mit Plastikgriff (kurz: HtEfmPg) der Preisklasse n ist durch folgende Funktion definiert
 \begin{equation}
 HtEfmPg(n)\coloneqq\begin{cases}
@@ -306,7 +306,53 @@ HtEfmPg(n)\coloneqq\begin{cases}
 	   	2*HtEfmPg(n-1)-HtEfmPg(n-2)+1, & \text{sonst}
 	\end{cases}
 \end{equation}
-Zeigen Sie: $HtEfmPg(n)=0.5*(n^2+n+2)$
+Zeigen Sie: $HtEfmPg(n)=0.5*(n^2+n+2),\forall n\in\mathbb{N}_0$
 \end{itemize}
+Lösungen auf nächster Seite.
+\newpage
+1. \begin{proof}
+Wir zeigen die Aussage mit Induktion über n.
+\begin{itemize}
+\item \underline{Induktionsbasis:} Sei n=0, dann
+\begin{equation*}
+	\sum_{i=0}^{0}i^2=0=\frac{0*(0+1)*(2*0+1)}{6}
+\end{equation*}
+\item \underline{Induktionsschritt:} Sei $n\in \mathbb{N}_0$ beliebig fixiert
+	\begin{itemize}
+	\item \underline{Induktionshypothese:} Es gelte $\sum_{i=0}^{n}i^2=\frac{n*(n+1)*(2*n+1)}{6}$
+	\item \underline{Induktionsbehauptung:} Dann gilt auch $\sum_{i=0}^{n+1}i^2=\frac{(n+1)*(n+2)*(2*(n+1)+1)}{6}$
+	\item \underline{Beweis:}
+	\begin{align*}
+		\sum_{i=0}^{n+1}i^2&=(n+1)^2+\sum_{i=0}^{n}i^2\stackrel{I.H.}{=}n^2+2n+1+\frac{n*(n+1)*(2n+1)}{6}\\
+		&=\frac{6n^2+12n+6+2n^3+n^2+2n^2+n}{6}=\frac{2n^3+9n^2+13n+6}{6}\\
+		\frac{(n+1)(n+2)(2(n+1)+1)}{6}&=\frac{2n^3+3n^2+4n^2+6n+2n^2+3n+4n+6}{6}\\
+		&=\frac{2n^3+9n^2+13n+6}{6}
+	\end{align*}
+	\end{itemize}
+\end{itemize}
+\hfill
+\end{proof}
+2. \begin{proof}
+Wir zeigen die Aussage mit Induktion über n. Setze $h(n)\eqqcolon HtEfmPg(n)$
+\begin{itemize}
+\item \underline{Induktionsbasis:} 
+\begin{itemize}
+\item \underline{$n=0$:}\qquad$1=0.5*(0^2+0+2)=h(0)$
+\item \underline{$n=1$:}\qquad$2=0.5*(1^2+1+2)=h(1)$
+\end{itemize}
+\item \underline{Induktionsschritt:} Sei $n\in \mathbb{N}_0$ beliebig fixiert
+	\begin{itemize}
+	\item \underline{Induktionshypothese:} Die Aussage gelte für $n$ und $n+1$.
+	\item \underline{Induktionsbehauptung:} Dann gilt sie auch für $n+2$.
+	\item \underline{Beweis:}
+	\begin{align*}
+		h(n+2)&\stackrel{Def.}{=}2*h(n+1)-h(n)+1\stackrel{I.H.}{=}((n+1)^2+n+1+2)-0.5*(n^2+n+2)+1\\
+		&=n^2+3n+4-0.5*(n^2+n+2)+1=0.5*n^2+2.5n+4\\
+		&=0.5*(n^2+5n+8)=0.5*((n+2)^2+(n+2)+2)
+	\end{align*}
+	\end{itemize}
+\end{itemize}
+\end{proof}
+
 \end{sloppypar}
 \end{document}
