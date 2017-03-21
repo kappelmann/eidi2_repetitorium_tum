@@ -326,7 +326,7 @@ Mit dieser Erkenntnis und der Berücksichtigung der weiteren Tipps, setzen wir
 \begin{equation*}
 I\coloneqq s=\frac{(i-1)*i}{2}\wedge 0\le i
 \end{equation*}
-Es gilt jedoch nicht $0\le x$, denn der Benutzer könnte eine negative Zahl eingeben. Nun gilt es, unsere Invariante zu verifizieren. Hierfür beginnen wir von I und laufen rückwärts einmal die ganze Schleife entlang.
+Allerdings setzen wir nicht $0\le x$, denn der Benutzer könnte eine negative Zahl eingeben. Nun gilt es, unsere Invariante zu verifizieren. Hierfür beginnen wir von I und laufen rückwärts einmal die ganze Schleife entlang.
 \begin{align*}
 WP\llbracket i=i+1;\rrbracket(I)&\equiv s=\frac{i*(i+1)}{2}\wedge 0\le i+1\\
 &\equiv s=\frac{i*(i+1)}{2}\wedge -1\le i\\
@@ -344,7 +344,7 @@ WP\llbracket i\le x;\rrbracket(F,D)\quad&\equiv (i>x \wedge s=\frac{x*(x+1)}{2})
 &\Leftarrow s=\frac{(i-1)*i}{2}\wedge 0\le i\equiv I
 \end{align*}
 Unsere Schleife ist also lokal konsistent annotiert! Bemerke, wie wir schrittweise die beiden Oder-Bedingungen auf eine gemeinsame Form gebracht haben, um dann mit Distributivität die Gemeinsamkeit auszuklammern und so schrittweise sich der Invariante I zu nähern.
-Im vorletzten Schritt haben wir unsere Aussage verstärkt, indem wir eine Und-Klausuel hinzugefügt haben und im letzten Schritt haben wir sie verstärkt, indem wir eine Oder-Klausel entfernt haben. Jetzt sind wir fast fertig, wir müssen nur noch sequentiell zum Start zurückrechnen.
+Im letzten Schritt haben wir unsere Aussage verstärkt, indem wir eine Oder-Klausel entfernt haben (analog kann man auch durch Hinzufügen von Und-Klauseln eine Aussage verstärken). Jetzt sind wir fast fertig, wir müssen nur noch sequentiell zum Start zurückrechnen.
 \begin{align*}
 WP\llbracket s=i;\rrbracket(I)&\equiv i=\frac{(i-1)*i}{2}\wedge 0\le i\eqqcolon C\\
 WP\llbracket i=0;\rrbracket(C)&\equiv 0=\frac{(0-1)*0}{2}\wedge 0\le 0\equiv true\eqqcolon B\\
