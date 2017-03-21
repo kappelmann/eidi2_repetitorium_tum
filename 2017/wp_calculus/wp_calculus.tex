@@ -216,7 +216,7 @@ Das wp-Kalkül dient zur Verifikation der Semantik von Programmen und fällt in 
 	Die Verifikation von Programmen ist ein sehr wichtiges Themengebiet der Informatik. Die größte Fehlerquelle der Welt ist der Mensch und somit sollten wir auch Programme, die von Menschen geschrieben sind, mit Skepsis betrachten und sie verifizieren, anstatt ihnen blind zu vertrauen, denn das hat schon zu oft in der Geschichte zu unschönen Ereignissen geführt\footnote{\url{https://en.wikipedia.org/wiki/List\_of\_software\_bugs}}.\\
 Die Idee des wp-Kalküls ist folgende:
 \begin{enumerate}
-\item Annotiere das gewünschte Verhalten des Programmes im Kontrollflussgraphens des Programmes an den geeigneten Stellen (jeweils an den Kanten). Immer, wenn das Programm an den jeweiligen Punkt ankommt, muss die Annotation/Zusicherung erfüllt sein.
+\item Annotiere das gewünschte Verhalten des Programmes im Kontrollflussgraphens des Programmes an den geeigneten Stellen (jeweils an den Kanten). \textbf{Immer, wenn das Programm an den jeweiligen Punkt ankommt, muss die Annotation/Zusicherung erfüllt sein. Wenn der Programmpunkt nicht erreicht wird, ist egal, was in der Annotation steht.}
 \item Beginne vom Stopknoten und berechne durch die vom wp-Kalkül gegebenen Schlussregeln die Vorbedingung zur aktuellen Annotation.
 \item Verifiziere, ob die annotierte und die berechnete Annotation zueinander konsistent sind. Was ``konsistent'' hier bedeutet, erläutern wir noch im Laufe dieses Blattes im Fallbeispiel.
 \item Wiederhole diesen Schritt, bis zum Startknoten und überprüfe somit das ganze Programm.
@@ -244,8 +244,8 @@ Wie bereits gesagt, stellen Schleifen ein Problem dar, da diese uns hindern sequ
 Damit nicht genug, mit Schleifen kommt noch ein zweites Problem auf uns zu: Terminierung. Vielleicht kommen wir am Stopknoten unseres Programmes an, sondern verlieren uns in einer sich unaufhaltsam wirrenden Schleife? Wie können wir sicher gehen, dass dies nicht passiert? Wir geben wieder ein Vorgehensweise an:
 \begin{itemize}
 \item Für jede Schleife, füge eine Messgröße r in das Programm ein, die vor dem ersten Antreffen der Schleife initialisiert wird.
-\item Bei jedem Betreten der Schleife, stelle sicher, dass r größer als eine von dir festgelegte untere Schranke bleibt (meist $r\ge 0$).
-\item Vor dem Verlassen der Schleife, stelle sicher, dass r strikt kleiner gesetzt wird.
+\item Bei jedem Betreten der Schleife, stelle sicher, dass r entweder größer oder kleiner als eine von dir festgelegte obere bzw.\ untere Schranke bleibt (meist $r\ge 0$).
+\item Vor dem Verlassen der Schleife, stelle sicher, dass r strikt größer (wenn eine obere Schranke angegeben wird) bzw.\ strikt kleiner (wenn eine untere Schranke angegeben wird) gesetzt wird.
 \end{itemize}
 \section{Fallbeispiel}
 \subsection{Ente, Ente, Ente, Gauß!}
@@ -455,6 +455,10 @@ Welche Startzusicherungen sind hinreichend für die Zusicherung $x>1$ am Ende de
 \textbf{Lösungen:}\\
 1. $(b=42 \wedge c=33 \wedge a=b-c \wedge i=9)\Rightarrow(i=9\wedge i=a \wedge c\neq b)\equiv(i=a \wedge b\neq c\wedge i-2*a=-9)$\\
 $\Rightarrow(i=a)\equiv(i=a \vee a>a)\Rightarrow(i=a \vee (a=9 \wedge c>b))$\\
-2. $(a),(c),(d),(e),(g),(h)$
+Erinnerung: Um $A\Rightarrow B$ zu überprüfen, nehme an, dass A gilt und überprüfe, ob dann auch B gilt.\\
+Um $A\equiv B$ zu überprüfen, überprüfe ob sowohl $A\Rightarrow B$ als auch $B\Rightarrow A$ gilt.\\
+
+2. $(a),(c),(d),(e),(g),(h)$\\
+Beachte, immer wenn ein Programmpunkt nicht erreicht wird, kann die Annotation dort beliebig sein. Beispielsweise terminiert für $x=0$ das Programm nicht, der Endpunkt wird daher nicht erreicht und die Annotation ist somit hinreichend.
 \end{sloppypar}
 \end{document}
