@@ -399,8 +399,7 @@ WP\llbracket x<-1\ ||\ i\le x;\rrbracket(F,E)&\equiv (x\ge -1 \wedge i>x)\vee(r=
 \end{align*}
 Die Schleife ist also lokal konsistent annotiert, wir bewegen uns Richtung Startknoten
 \begin{align*}
-WP\llbracket r=x;\rrbracket(I)&\equiv x-i=x-i \wedge 0\le i \le x+1\\
-&\equiv 0 \le i\le x+1\eqqcolon H\\
+WP\llbracket r=x;\rrbracket(I)&\equiv x=x-i \wedge 0\le i \le x+1\eqqcolon H\\
 WP\llbracket s=i;\rrbracket(H)&\equiv H\eqqcolon C\\
 WP\llbracket i=0;\rrbracket(C)&\equiv 0\le x+1\eqqcolon B
 \end{align*}
