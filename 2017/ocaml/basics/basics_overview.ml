@@ -89,12 +89,12 @@ let b = f 0
 (* fold left und right *)
 let mystring = ["Hallo";"du";"EIDI2";"Student"] 
 let ergebnis = fold_left (fun a s -> a^" "^s) "" mystring
-(* Ergebnis: "Hallo du EIDI2 Student" *)
+(* Ergebnis: " Hallo du EIDI2 Student" *)
 
-let ergebnis = fold_right (fun s a -> a^" "^s) "" mystring
-(* Ergebnis: "Student EIDI2 du Hallo" *)
-let ergebnis = fold_right (fun s a -> s^" "^a) "" mystring
-(* Ergebnis: "Hallo du EIDI2 Student" *)
+let ergebnis = fold_right (fun s a -> a^" "^s) mystring ""
+(* Ergebnis: " Student EIDI2 du Hallo" *)
+let ergebnis = fold_right (fun s a -> s^" "^a) mystring ""
+(* Ergebnis: "Hallo du EIDI2 Student " *)
 
 (* Summentypen *)
 type farbe = Gruen | Rot | Blau | Lilablassblau
