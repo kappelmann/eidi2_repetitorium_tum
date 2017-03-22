@@ -18,6 +18,8 @@ let rec h e l p = match p with 0 -> (p+1)
 let g f l = let rl = List.rev l in 
 	List.fold_right f rl 0
 
+let rec a x y = function ([],_) -> y | (_,[]) -> x | (x::xs,_) -> x::a xs y
+
 (* 3. Sind folgende Funktionen endrekursiv? Begründung! *)
 
 let f1 a b = a*b
