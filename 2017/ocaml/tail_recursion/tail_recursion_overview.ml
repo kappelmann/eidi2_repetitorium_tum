@@ -2,7 +2,7 @@
 (* Betrachte zunächst die folgende Implementierung für die Fibonacci Zahlen *)
 let rec fib n = let rec aux_fib n' = if n'=0 then (0,0) 
 	else if n'=1 then (0,1)
-	else let (pprev, prev) = aux_fib (n'-1) in (prev, pprev+prev)
+	else let (ppred, pred) = aux_fib (n'-1) in (pred, ppred+pred)
 	in snd (aux_fib n)
 
 (* Ein Aufruf von fib 1000000 würde nun 1000000 rekursive Aufrufe benötigen. Da muss jedem
@@ -13,8 +13,8 @@ let rec fib n = let rec aux_fib n' = if n'=0 then (0,0)
    Die Antwort: Endrekursion. Wir schreiben die fib Funktion so um, dass der letzte Aufruf der Funktion der rekursive Aufruf ist.
    Somit kann der Compiler einfach den aktuellen Stackframe wiederverwenden und muss keinen neuen Rahmen auf den Stack erzeugen
    --> Effizient wie eine Schleife. *)
-let fib_tail n = let rec fib_aux (pprev,prev) n' = if n'=n then pprev+prev 
-	else fib_aux (prev,pprev+prev) (n'+1) in
+let fib_tail n = let rec fib_aux (ppred,pred) n' = if n'=n then ppred+pred 
+	else fib_aux (pred,ppred+pred) (n'+1) in
 	if n<=1 then n else fib_aux (0,1) 2
 (* Wer mir nicht glaubt, dass das viel Unterschied macht, soll einfach mal fib 1000000 und fib_tail 1000000 laufen lassen :p *)
 
