@@ -1,5 +1,5 @@
 (* Was ist Endrekursion und warum brauchen wir es? *)
-(* Betrachte zunächst die primitive Implementierung für die Fibonacci Zahlen *)
+(* Betrachte zunächst die folgende Implementierung für die Fibonacci Zahlen *)
 let rec fib n = let rec aux_fib n' = if n'=0 then (0,0) 
 	else if n'=1 then (0,1)
 	else let (pprev, prev) = aux_fib (n'-1) in (prev, pprev+prev)
@@ -19,7 +19,9 @@ let fib_tail n = let rec fib_aux (pprev,prev) n' = if n'=n then pprev+prev
 (* Wer mir nicht glaubt, dass das viel Unterschied macht, soll einfach mal fib 1000000 und fib_tail 1000000 laufen lassen :p *)
 
 (* Achtung: Diese Funktion ist nicht endrekursiv! Der rekursive Aufruf von not_tail_rec ist zwar endrekursiv,
-   jedoch verwendet die Funktion eine nicht endrekursive Funktion (fib)! *)
+   jedoch verwendet die Funktion eine nicht endrekursive Funktion (fib)! 
+   Eine Funktion ist nur Endrekursiv, wenn ihr (möglicher) rekursiver Aufruf die letze Operation ist und
+   jede verwendete Funktion endrekursiv ist. *)
 let rec not_tail_rec = function x when x<= 2 -> x
 	| x -> let r = fib x in not_tail_rec (-r)
 
@@ -43,24 +45,24 @@ type 'a desc_twig = Twig of {data: 'a; sub: 'a desc_twig; stop: 'a} | End
 (* Wende rekursiv g zuerst von oben nach unten auf alle Sub-Zweige an und dann von unten nach oben auf alle Stop-Zweige.
    Also ergäbe sich als Reihenfolge für das obige Beispiel: a,b,c,d,e,f.
    Zunächst nicht endrekursiv: *)
-let rec fold_twig g a = function End -> a
-	| Twig {data=d;sub;stop=s} -> g (fold_twig g (g a d) sub) s
+let rec fold_twig g acc = function End -> acc
+	| Twig {data=d;sub;stop=s} -> g (fold_twig g (g acc d) sub) s
 
 (* Und jetzt endrekursiv. Die Idee dabei ist, sich die noch ausstehenden Stop-Zweige in einer Liste zu merken.
    (Anmerkung: fold_left ist endrekursiv, fold_right allerdings nicht) *)
-let fold_twig_tail g a t = let rec fold_aux acc rem = function 
+let fold_twig_tail g acc t = let rec fold_aux acc rem = function 
 	| End -> List.fold_left g acc rem
 	| Twig {data=d;sub;stop=s} -> fold_aux (g acc d) (s::rem) sub
-	in fold_aux a [] t
+	in fold_aux acc [] t
 
 (* Alternative mit Continuations für die OCaml-Profis *)
 type ('a,'b) cont = Cont of ('a -> ('a,'b) cont list -> 'b)
 
-let fold_twig_conts g a t = let rec fold_aux acc conts = function 
+let fold_twig_conts g acc t = let rec fold_aux acc conts = function 
 	| End -> (match conts with (Cont x)::xs -> x acc xs | [] -> acc)
 	| Twig {data=d;sub;stop=s} -> let c = Cont (fun acc conts -> fold_aux (g acc s) conts End) in
 		fold_aux (g acc d) (c::conts) sub
-	in fold_aux a [] t
+	in fold_aux acc [] t
 
 (* Tipps, um Funktionen in endrekursive Funktionen abzuändern: 
    1) Definiere eine neue innere Hilfsfunktion, die einen Akkumulator übernimmt und das 
