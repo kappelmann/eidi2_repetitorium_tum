@@ -1,0 +1,4 @@
+These exercises are taken mainly from winter term 2015/16 and contain basic concepts like pattern matching, lists, tuples, simple sum types, etc.
+You should also take another look at exercise sheets 5 and 6 (you may skip exercise 6.1 (AVL-tree)) from winter term 2016/17.
+
+Exercises for validation of expression signatures see 2016/signatures.
