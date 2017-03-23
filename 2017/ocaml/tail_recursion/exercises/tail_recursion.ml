@@ -1,9 +1,9 @@
 (* 1. Sie erstellen eine laufzeitkritische Anwendung. Welche der folgenden Definitionen würden sie bevorzugen. Warum? *)
 let rec append_1 x y = match x with [] -> y | x::xs -> x::append_1 xs y
 
-let append_2 x y = let rec append_aux x acc = match x with [] -> acc
-	| x::xs -> append_aux xs (x::acc)
-	in append_aux x y
+let append_2 x y = let rec aux acc = function [] -> acc
+        | x::xs -> aux (x::acc) xs
+        in aux y (List.rev x)
 
 let append_3 x y = x@y
 
