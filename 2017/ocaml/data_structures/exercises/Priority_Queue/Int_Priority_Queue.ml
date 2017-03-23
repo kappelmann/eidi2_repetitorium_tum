@@ -4,7 +4,7 @@ open Priority_Queue
 
 (* Eine Queue, in der sowohl Werte als auch Prioritäten integer sein sollen. 
    Speichert die Elemente einfach in einer Liste. *)
-module IntPriorityQueue : PriorityQueue = struct
+module IntPriorityQueue : (PriorityQueue with type priority=int and type value=int) = struct
 	type priority
 	type value
 	type queue
@@ -15,7 +15,8 @@ module IntPriorityQueue : PriorityQueue = struct
 	let pop = todo ()
 end
 
-(* Sortiert die übergeben int Liste mit einer Priority-Queue *)
-let sort l q = todo ()
+(* Sortiert die übergeben int Liste mit einer Priority-Queue. Gibt die 
+   sortierte Liste zurück. *)
+let sort l = todo ()
 
 let _ = print_string "This list should be sorted in ascending order:\n"; List.fold_left (fun a x -> print_int x; print_string " " ; a) 0 (sort [2;5;11;3;6;8;9;4;2])
