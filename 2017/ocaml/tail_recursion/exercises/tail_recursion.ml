@@ -20,6 +20,8 @@ let g f l = let rl = List.rev l in
 
 let rec a x y = function ([],_) -> y | (_,[]) -> x | (x::xs,_) -> x::a xs y
 
+let fold_right f l acc = List.fold_right f l acc
+
 (* 3. Sind folgende Funktionen endrekursiv? Begründung! *)
 
 let f1 a b = a*b
