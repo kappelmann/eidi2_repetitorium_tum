@@ -92,5 +92,4 @@ let rec f10 i = if i = 0 then 0 else f10 0 + f10 0
  * sich somit nicht durch eine Konstante begrenzen *)
 let rec f11 i = if i = 0 then 0 else f11 0 + f11 (i-1)
 
-
 (* Jetzt schaut euch nochmal Übungsblatt 7 dieses Jahres an. Aufgabe 7.5 kann man eventuell überspringen. *)
