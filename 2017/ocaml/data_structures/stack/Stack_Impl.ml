@@ -9,11 +9,11 @@ module Stack_Impl : Stack = struct
 end
 
 let s = Stack_Impl.empty
-let s = push s 1 
-let s = push s 2
-let s = push s 3
+let s = Stack_Impl.push s 1 
+let s = Stack_Impl.push s 2
+let s = Stack_Impl.push s 3
 
-let (Some x, s) = pop s
-print_int x (* 3 printen *)
-let (Some x, s) = pop s
-print_int x (* 2 printen *)
+let (Some x, s) = Stack_Impl.pop s
+let _ = print_int x (* 3 printen *)
+let (Some x, s) = Stack_Impl.pop s
+let _ = print_int x (* 2 printen *)
