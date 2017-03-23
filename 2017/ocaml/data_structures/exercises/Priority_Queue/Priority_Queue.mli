@@ -4,7 +4,7 @@ module type PriorityQueue = sig
 	type queue
 	(* Gibt eine leere Queue zurück *)
 	val empty : queue
-	(* True, falls der erste Parameter größer als der zweite ist. *)
+	(* True, falls der erste Parameter kleiner als der zweite ist. *)
 	val is_smaller : priority -> priority -> bool
 	(* Fügt in die Queue den Wert mit der übergebenen Priorität ein. *)
 	val insert : queue -> value -> priority -> queue
