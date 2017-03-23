@@ -11,6 +11,8 @@ module type Graph = sig
         val has_node : graph -> node -> bool
         (* Überprüft, ob eine Kante bereits im Graphen vorhanden ist *)
         val has_edge : graph -> edge -> bool
+        (* Gibt die Nachbarn eines Knotens zurück *)
+        val neighbours : graph -> node -> node list option
         (* Fügt einen neuen Knoten ein, falls noch nicht vorhanden *)
         val insert_node : graph -> node -> graph
         (* Fügt eine neue Kante in den Graph ein, falls noch nicht vorhanden. 
