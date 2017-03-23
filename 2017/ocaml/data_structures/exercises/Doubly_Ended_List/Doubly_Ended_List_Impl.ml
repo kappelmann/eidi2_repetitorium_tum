@@ -1,14 +1,14 @@
 let todo _ = failwith "Something is not implemented"
 
-open Doubly_Linked_List
+open Doubly_Ended_List
 
 (* Achten Sie bei der Implementierung auf eine möglichst effiziente Laufzeit *)
-(* module DoublyLinkedListImpl ...
+(* module DoublyEndedListImpl ...
 *)
 
 
 (* few test cases *)
-open  DoublyLinkedListImpl
+open  DoublyEndedListImpl
 
 let l = empty
 let rec push op l v = List.fold_left (fun l x -> op l x) l v

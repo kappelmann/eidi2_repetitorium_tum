@@ -1,4 +1,4 @@
-module type DoublyLinkedList = sig
+module type DoublyEndedList = sig
 	type 'a dlist
 	(* Gibt eine leere Liste zurück *)
 	val empty : 'a dlist
