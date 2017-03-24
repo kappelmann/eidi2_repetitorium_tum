@@ -20,7 +20,7 @@ open Priority_Queue
    We want to use the value of the comparable module as a priority key and
    the is_smaller function in order to find the insertion position 
    of a given priority. *)
-module ListPriorityQueue (C : Comparable) : PriorityQueue with type priority := C.value = struct
+module ListPriorityQueue (C : Comparable) : PriorityQueue with type priority := C.value and type 'a value = 'a = struct
         type 'a value = 'a
 	type 'a queue = ('a value*C.value) list
 	let empty = []
@@ -36,7 +36,7 @@ end
    as opposed to our old implementation where we would have needed to re-implement the
    whole module. *)
 module IntPriorityQueue = ListPriorityQueue(IntCompare)
-module BoolPriorityQueue = BoolPriorityQueue(BoolCompare)
+module BoolPriorityQueue = ListPriorityQueue(BoolCompare)
 
 (* Sortiert die übergebene int Liste aufsteigend mit Hilfe der IntPriorityQueue *)
 let sort l = let q = List.fold_left (fun q v -> IntPriorityQueue.insert q v v) IntPriorityQueue.empty l
