@@ -12,11 +12,11 @@ Day 4:
 	* Continuation of tail recursion
 	* Data structures with OCaml (ocaml/data_structures)
 Day 5: 
+	* Continuation of data structures (ocaml/data_structures)
 	* Functors (ocaml/functors)
-	* Threads and channels (ocaml/threads_channels)
 Day 6: 
-	* Continuation of threads and channels (ocaml/threads_channels)
-	* Big-step proofs (big_step)
+	* Threads and channels (ocaml/threads_channels)
+	* (Maybe) Big-step proofs (big_step)
 Day 7:
 	* Continuation of big-step
 	* Equivalence proofs (equivalence_proofs)
