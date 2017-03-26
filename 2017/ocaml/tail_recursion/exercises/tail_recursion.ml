@@ -28,8 +28,6 @@ let rec a x y = match (x,y) with ([],_) -> y | (_,[]) -> x | (x::xs,_) -> x::a x
 
 let fold_right f l acc = List.fold_right f l acc
 
-let fold_right = List.fold_left f acc (List.rev l)
-
 (* 3. Sind folgende Funktionen endrekursiv? Begründung! *)
 
 let f1 a b = a*b
