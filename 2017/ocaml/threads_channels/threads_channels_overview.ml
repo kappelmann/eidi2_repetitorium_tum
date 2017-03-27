@@ -43,7 +43,7 @@ let ch = new_channel ()
 (* Jetzt wollen wir einen neuen Thread starten, und auf dessen Ergebnis warten 
    Dafür erstellen wir einen Thread, der uns ganz primitv nur die Zahl 10 zurücksenden soll.
    Das senden passiert über den Channel mit Hilfe von send und sync. 
-   send <channel> <data> liefer ein sogenannten Event zurück. Auf dieses können wir uns dann mit sync <event> synchronisieren, um
+   send <channel> <data> liefert ein sogenannten Event zurück. Auf dieses können wir uns dann mit sync <event> synchronisieren, um
    die Daten, die im Event stecken, wirklich loszusenden. Das kann man sich so vorstellen, als ob
    wir uns zunächst nur vorbereiten, Daten über die Leitung zu schicken, aber noch nicht wirklich lossenden.
    Erst mit sync senden wir die Nachricht los UND blockieren danach solange, bis jemand unsere Nachricht vom Kanal abnimmt. *)
@@ -52,11 +52,11 @@ let _ = Thread.create (fun c -> sync(send c 10)) ch
    aufs Empfangen vor und mit sync <event> warten wir solange, bis wir Daten vom Kanal erhalten *)
 let e = sync (receive ch)
 let _ = print_int e
-let ch = new_channel ()
 (* Würden wir jetzt erneut sync (receive ch) aufrufen, erhalten wir nicht erneut die Zahl 10, sondern
    würden für immer blockieren/warten. *)
 
 (* Es können auch mehrere Threads über einen Kanal senden *)
+let ch = new_channel ()
 let t1 = Thread.create (fun ch -> sync(send ch "Thread 1")) c
 let t2 = Thread.create (fun ch -> Thread.delay 1; sync(send ch "Thread 2")) c
 (* Zuerst vom schnellen Thread empfangen *)
@@ -70,6 +70,8 @@ let (c1,c2) = (new_channel (), new_channel ())
 let t1 = Thread.create (fun ch -> sync(send ch "Thread 1")) c1
 let t2 = Thread.create (fun ch -> sync(send ch "Thread 2")) c2
 (* Zuerst vom schnellen Thread empfangen *)
+let f = select[receive c1;receive c2]
+(* Dann aber auch vom langsameren Thread *)
 let s = select[receive c1;receive c2]
 (* Analog funktioniert choose <event_list>. Choose liefert aber das schnellere Event und nicht
    dessen Ergebnis zurück. select ist in OCaml eigentlich wie folgt definiert: *)
@@ -77,8 +79,8 @@ let select l = sync (choose l)
 
 (* Manchmal will man wissen, welches Event gewählt wurde. Das kann man mit wrap erzielen. 
    wrap <event> <function> packt um das übergebene Event im ersten Parameter ein neues Event, indem es
- * auf das Ergebnis des ersten Events die übergebene Funktion anwendet. 
- * val wrap : 'a event -> ('a -> 'b) -> 'b event *)
+   auf das Ergebnis des ersten Events die übergebene Funktion anwendet. 
+   val wrap : 'a event -> ('a -> 'b) -> 'b event *)
 
 let (c_odd,c_even) = (new_channel(), new_channel())
 let t1 = Thread.create (fun ch -> sync(send ch 1)) c_odd
@@ -97,7 +99,7 @@ let s = choose [
                 wrap (receive c_even) (fun a -> ("even",a))
                ] |> sync
 
-(* Starte zwei Threads. Thread 1 wartet zuerst 100 Sekunden und sende dann, Thread 2 sendet sofort *)
+(* Starte zwei Threads. Thread 1 wartet zuerst 100 Sekunden und sendet dann, Thread 2 sendet sofort *)
 let _ = Thread.create (fun x -> Thread.delay 100; sync(send c_odd x)) 1
 let _ = Thread.create (fun x -> sync(send c_even x)) 2
 
