@@ -13,10 +13,10 @@ let t = Thread.create (fun x -> x+1) 10
 (* Beachte: t enthält nicht jetzt nicht das Ergebnis der Berechnung des Threads 11, sondern die Thread-ID.
    Wie wir die Kommunikation zwischen den Threads herstellen können, also z.B. hier das Ergebnis 11 zurückerhalten, kommt später. *)
 
-(* Anderes Beispiel: Fold in einem neuen Thread*)
-Thread.create (fold (fun a x -> a+x) 0) [1;2;3]
+(* Anderes Beispiel: fold_left in einem neuen Thread*)
+Thread.create (fold_left (fun a x -> a+x) 0) [1;2;3]
 (* Alternativ hätten wir auch schreiben können: *)
-Thread.create (fun () -> fold (fun a x -> a+x) 0 [1;2;3]) ()
+Thread.create (fun () -> fold_left (fun a x -> a+x) 0 [1;2;3]) ()
 (* Die Klammern () entsprechen was man aus Java als void kennt. In OCaml
    haben sie den Typ unit. *)
 

@@ -6,7 +6,7 @@
  *   Der Channel, auf dem das Ergebnis zurückgegeben soll
  * Rückgabetyp: unit *)
 (* Geben sie die passende Signatur für die Funktion an *)
-let threaded_filter : todo
+val threaded_filter : todo
 
 (* Aufgabe 2: ’a t soll die asynchrone Berechnung eines Werts vom Typ ’a darstellen. create f a be-
    kommt die Funktion f mit dem Argument a und gibt ein Future zurück, das f a asynchron
