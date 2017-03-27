@@ -57,8 +57,8 @@ let _ = print_int e
 
 (* Es können auch mehrere Threads über einen Kanal senden *)
 let ch = new_channel ()
-let t1 = Thread.create (fun ch -> sync(send ch "Thread 1")) c
-let t2 = Thread.create (fun ch -> Thread.delay 1; sync(send ch "Thread 2")) c
+let t1 = Thread.create (fun ch -> sync(send ch "Thread 1")) ch
+let t2 = Thread.create (fun ch -> Thread.delay 1; sync(send ch "Thread 2")) ch
 (* Zuerst vom schnellen Thread empfangen *)
 let s = sync (receive c)
 (* Aber danach auch vom langsamen Thread *)
