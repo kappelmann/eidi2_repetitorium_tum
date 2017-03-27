@@ -1,4 +1,6 @@
 open Threading_Basics
+open Thread
+open Event
 
 (* Aufgabe 2 *)
 let f x = x*100-1
