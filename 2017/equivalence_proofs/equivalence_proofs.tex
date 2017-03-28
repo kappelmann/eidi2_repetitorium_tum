@@ -1,0 +1,353 @@
+\documentclass[hidelinks]{article}
+\usepackage[ngerman]{babel} 
+\usepackage{stmaryrd}
+\usepackage[utf8x]{inputenc}
+%% Hyperlinks 
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    linktoc=all,
+    urlcolor={blue!80!black}
+}
+%% Graphics
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage{enumerate}
+% Math packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Algorithms
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\newcommand\Let[2]{\State #1 $\gets$ #2}
+\algrenewcomment[1]{\(\qquad \triangleright\) #1}
+\newcommand\Blet[2]{\State \textbf{let} #1 \textbf{be} #2}
+\errorcontextlines\maxdimen
+% begin vertical rule patch for algorithmicx
+% borrowing from http://tex.stackexchange.com/questions/41956/marking-conditional-versions-with-line-in-margin
+% see http://tex.stackexchange.com/questions/110431/ploblems-with-vertical-lines-in-algorithmicx
+\RequirePackage{zref-abspage}
+\RequirePackage{zref-user}
+\RequirePackage{tikz}
+\RequirePackage{atbegshi}
+\usetikzlibrary{calc}
+\RequirePackage{tikzpagenodes}
+\RequirePackage{etoolbox}
+\makeatletter
+\newcommand*\ALG@lastblockb{b}
+\newcommand*\ALG@lastblocke{e}
+\apptocmd{\ALG@beginblock}{%
+    %\typeout{beginning block, nesting level \theALG@nested, line \arabic{ALG@line}}%
+    \ifx\ALG@lastblock\ALG@lastblockb
+        \ifnum\theALG@nested>1\relax\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi{\ALG@tikzborder}{}%
+    \fi
+    \let\ALG@lastblock\ALG@lastblockb%
+}{}{\errmessage{failed to patch}}
+
+\pretocmd{\ALG@endblock}{%
+    %\typeout{ending block, nesting level \theALG@nested, line \arabic{ALG@line}}%
+    \ifx\ALG@lastblock\ALG@lastblocke
+        \addtocounter{ALG@nested}{1}%
+        \addtolength\ALG@tlm{\csname ALG@ind@\theALG@nested\endcsname}%
+        \ifnum\theALG@nested>1\relax\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi{\endALG@tikzborder}{}%
+        \addtolength\ALG@tlm{-\csname ALG@ind@\theALG@nested\endcsname}%
+        \addtocounter{ALG@nested}{-1}%
+    \fi
+    \let\ALG@lastblock\ALG@lastblocke%
+}{}{\errmessage{failed to patch}}
+\tikzset{ALG@tikzborder/.style={line width=0.5pt,black}}
+\newcommand*\currenttextarea{current page text area}
+\newcommand*{\updatecurrenttextarea}{%
+    \if@twocolumn
+        \if@firstcolumn
+            \renewcommand*{\currenttextarea}{current page column 1 area}%
+        \else
+            \renewcommand*{\currenttextarea}{current page column 2 area}%
+        \fi
+    \else
+        \renewcommand*\currenttextarea{current page text area}%
+    \fi
+}
+\newcounter{ALG@tikzborder}
+\newcounter{ALG@totaltikzborder}
+\newenvironment{ALG@tikzborder}[1][]{%
+    % Allow user to overwrite the used style locally
+    \ifx&#1&\else
+        \tikzset{ALG@tikzborder/.style={#1}}%
+    \fi
+    \stepcounter{ALG@totaltikzborder}%
+    \expandafter\edef\csname ALG@ind@border@\theALG@nested\endcsname{\theALG@totaltikzborder}%
+    \setcounter{ALG@tikzborder}{\csname ALG@ind@border@\theALG@nested\endcsname}%
+    %\typeout{begin ALG border nesting level=\theALG@nested, tikzborder=\theALG@tikzborder, tlm=\the\ALG@tlm}%
+    \tikz[overlay,remember picture] \coordinate (ALG@tikzborder-\theALG@tikzborder);% node {\theALG@tikzborder};% Modified \tikzmark macro
+    \zlabel{ALG@tikzborder-begin-\theALG@tikzborder}%
+    % Test if end-label is at the same page and draw first half of border if not, from start place to the end of the page
+    \ifnum\zref@extract{ALG@tikzborder-begin-\theALG@tikzborder}{abspage}=\zref@extract{ALG@tikzborder-end-\theALG@tikzborder}{abspage} \else
+        \updatecurrenttextarea
+        \ALG@drawvline{[shift={(0pt,.5\ht\strutbox)}]ALG@tikzborder-\theALG@tikzborder}{\currenttextarea.south east}{\ALG@thistlm}%
+        % If it spreads over more than two pages:
+        \newcounter{ALG@tikzborderpages\theALG@tikzborder}%
+        \setcounter{ALG@tikzborderpages\theALG@tikzborder}{\numexpr-\zref@extract{ALG@tikzborder-begin-\theALG@tikzborder}{abspage}+\zref@extract{ALG@tikzborder-end-\theALG@tikzborder}{abspage}}%
+        \ifnum\value{ALG@tikzborderpages\theALG@tikzborder}>1
+            \edef\nextcmd{\noexpand\AtBeginShipoutNext{\noexpand\ALG@tikzborderpage{\theALG@tikzborder}{\the\ALG@thistlm}}}%some pages need a border on the whole page
+            \nextcmd
+        \fi
+    \fi
+}{%
+    \setcounter{ALG@tikzborder}{\csname ALG@ind@border@\theALG@nested\endcsname}%
+    %\typeout{end ALG border nesting level=\theALG@nested, tikzborder=\theALG@tikzborder, tlm=\the\ALG@tlm}%
+    \tikz[overlay,remember picture] \coordinate (ALG@tikzborder-end-\theALG@tikzborder);% node {\theALG@tikzborder};% Modified \tikzmark macro
+    \zlabel{ALG@tikzborder-end-\theALG@tikzborder}%
+    % Test if begin-label is at the same page and draw whole border if so, from start place to end place
+    \updatecurrenttextarea
+    \ifnum\zref@extract{ALG@tikzborder-begin-\theALG@tikzborder}{abspage}=\zref@extract{ALG@tikzborder-end-\theALG@tikzborder}{abspage}\relax
+        \ALG@drawvline{[shift={(0pt,.5\ht\strutbox)}]ALG@tikzborder-\theALG@tikzborder}{ALG@tikzborder-end-\theALG@tikzborder}{\ALG@thistlm}%
+    % Otherwise draw second half of border, from the top of the page to the end place
+    \else
+        %\settextarea
+        \ALG@drawvline{\currenttextarea.north west}{ALG@tikzborder-end-\theALG@tikzborder}{\ALG@thistlm}%
+    \fi
+}
+\newcommand*{\ALG@drawvline}[3]{%#1=from, #2=to, #3=value of \ALG@tlm/\ALG@thisthm
+    \begin{tikzpicture}[overlay,remember picture]
+        \draw [ALG@tikzborder]
+            let \p0 = (\currenttextarea.north west), \p1=(#1), \p2 = (#2)
+             in
+            (#3+\fboxsep+.5\pgflinewidth+\x0,\y1+\fboxsep+.5\pgflinewidth)%-\fboxsep-.5\pgflinewidth
+             --
+            (#3+\fboxsep+.5\pgflinewidth+\x0,\y2-\fboxsep-.5\pgflinewidth)
+            %node[midway,anchor=east] {\ALG@tikzbordertext}
+        ;
+    \end{tikzpicture}%
+}
+\newcommand{\ALG@tikzborderpage}[2]{%the whole page gets a border, #1=value of \theALG@tikzborder, #2=value of \ALG@tlm/\ALG@thistlm
+    \updatecurrenttextarea
+    \setcounter{ALG@tikzborder}{#1}%
+    \ALG@drawvline{\currenttextarea.north west}{\currenttextarea.south east}{#2}%
+    \addtocounter{ALG@tikzborderpages\theALG@tikzborder}{-1}%
+    \ifnum\value{ALG@tikzborderpages\theALG@tikzborder}>1
+        \AtBeginShipoutNext{\ALG@tikzborderpage{#1}{#2}}%
+    \fi
+    \vspace{-0.5\baselineskip}% Compensate for the generated extra space at begin of the page. No idea why exactly this happens.
+}
+\def\ALG@tikzbordertext{\the\ALG@tlm}
+\makeatother
+% end vertical rule patch for algorithmicx
+
+% continuation indent patch, slightly extended from http://tex.stackexchange.com/questions/78776/forced-indentation-in-algorithmicx to support multiple paragraphs in one block
+\RequirePackage{etoolbox}
+\makeatletter
+\newlength{\ALG@continueindent}
+\setlength{\ALG@continueindent}{2em}
+\newcommand*{\ALG@customparshape}{\parshape 2 \leftmargin \linewidth \dimexpr\ALG@tlm+\ALG@continueindent\relax \dimexpr\linewidth+\leftmargin-\ALG@tlm-\ALG@continueindent\relax}
+\newcommand*{\ALG@customparshapex}{\parshape 1 \dimexpr\ALG@tlm+\ALG@continueindent\relax \dimexpr\linewidth+\leftmargin-\ALG@tlm-\ALG@continueindent\relax}
+\apptocmd{\ALG@beginblock}{\ALG@customparshape\everypar{\ALG@customparshapex}}{}{\errmessage{failed to patch}}
+\makeatother
+% end continuation indent patch
+\usepackage{mathtools}
+
+% Proof system
+\usepackage{amsthm}
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{bsp}[thm]{Example}
+\newtheoremstyle{rem} % name
+    {\topsep}                    % Space above
+    {\topsep}                    % Space below
+    {}                   % Body font
+    {}                           % Indent amount
+    {\bf}                   % Theorem head font
+    {:}                          % Punctuation after theorem head
+    {.5em}                       % Space after theorem head
+    {}  % Theorem head spec (can be left empty, meaning ‘normal’)
+\theoremstyle{rem}
+\newtheorem*{remark}{Note}
+%\usepackage{xpatch}
+%\makeatletter
+%% Remove last point from definitions, theorems, etc.
+%\xpatchcmd{\@thm}{\thm@headpunct{.}}{\thm@headpunct{\\}}{}{}
+%\makeatother
+
+% Seitenränder
+%originally 1.5 in
+\usepackage[margin=1in]{geometry}
+% citations
+\usepackage{cite}
+% Graphs
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta,positioning}
+\usepackage{tikz-3dplot}
+\usepackage{subfig}
+\usepackage{pgfplots}
+\pgfplotsset{%
+    ,compat=1.12
+    ,every axis x label/.style={at={(current axis.right of origin)},anchor=north west}
+    ,every axis y label/.style={at={(current axis.above origin)},anchor=north east}
+    }
+\setlength{\parindent}{0pt}
+
+% Custom commands
+\newcommand{\fromto}[2]{\{#1,\ldots,#2\}}
+
+\pagestyle{plain}
+
+%------------------------------------------------------------------------------
+\begin{document}
+
+\pagenumbering{arabic}
+
+\begin{sloppypar}
+\begingroup  
+  \LARGE Einführung in die Informatik 2 - Repetitorium WS 2016/17\\Technische Universität München\\[0.5em]
+  \large{Kevin Kappelmann\hfill \today}\\
+\endgroup
+\hrule height 1pt
+	{\LARGE{{\begin{center}\textbf{Äquivalenzbeweise}\end{center}}}}
+\section{Theorie}
+	Wie wir vielleicht bemerkt haben, sind Big-Step-Ableitungsbäume kein Spaß zu zeichnen und werden nicht selten sehr groß. Glücklicherweise können wir die Semantik unserer Programme auch durch eine etwas lockerere Art beweisen, indem wir einfach Definitionen und Substitutionen, wie in einem klassischen mathematischen Beweis, verwenden, um zwei Ausdrücke schrittweise ineinander umzuführen.\\
+Zum Beispiel macht es doch sehr Sinn, zum Beweis von $(let\ f=3\ in\ f*(1+2))=9$ nicht mühselig einen Big-Step-Ableitungsbaum zu zeichnen, sondern den Beweis wie folgt zu führen
+\begin{equation*}
+	f*(1+2)\stackrel{Def.\ f}{=}3*(1+2)=3*(3)=9
+\end{equation*}
+Ja, das sieht doch gut aus! Aber\ldots warum machen wir dann überhaupt Big-Step-Beweise? Zur Knechtschaft der Studenten? Gewiss! Aber natürlich auch aus einem anderen Grund. Betrachten wir folgende Definitionen
+\begin{align*}
+	let\ rec\ f\ x = f\ x\\
+	let\ g\ x = 0
+\end{align*}
+Wir wollen nun $g\ (f\ 1)=0$ beweisen. Also schreiben wir
+\begin{equation*}
+	g\ (f\ 1)\stackrel{Def.\ g}{=}0
+\end{equation*}
+Halt, nicht so schnell! Die Funktion f terminiert offensichtlich nicht. Geben wir Definitionen wie oben in den OCaml-Interpreter ein, so erhalten wir auch, dass der Aufruf $g\ (f\ 1)$ nicht terminiert.
+Unser Beweis ist also falsch. Wir haben die Schwachstelle unserer Vereinfachung gefunden. \textbf{Das ganze Vorhaben funktioniert nur unter dem Vorbehalt, dass alle Ausdrücke terminieren!}. Deswegen wird auch in Übungen explizit der Zusatz ``Sie dürfen annehmen, dass alle Aufrufe terminieren'' genannt, sollte ein Äquivalenzbeweis ohne Big-Step-Ableitungsbaum verlangt sein.
+
+\section{Fallbeispiel}
+Wie können wir nun das Ganze nutzen, um die Semantik unserer Programme zu überprüfen? Dies sollen die folgenden zwei Beispiele erläutern.
+\subsection{Schon wieder Gauß?}
+Gegeben sind folgende OCaml-Definitionen
+\begin{equation}
+	let\ rec\ f\ n\ = if(n<=1)\ then\ n\ else\ n+f\ (n-1)
+\end{equation}
+Zeigen Sie, dass für alle $n\in\mathbb{N}_0$ gilt, unter der Voraussetzung, dass alle Aufrufe terminieren:
+\begin{equation*}
+	f\ n = \frac{n*(n+1)}{2}
+\end{equation*}
+\begin{proof}
+Wir sehen, dass die Definition von f rekursiv von n abhängt und n in jedem Schritt kleiner wird. Daher zeigen wir die Aussage mit Induktion über n.
+\begin{itemize}
+\item \underline{Induktionsbasis:} Sei n=0, dann
+\begin{equation*}
+	f\ 0\stackrel{Def.\ f}{=}0=\frac{0*(0+1)}{2}
+\end{equation*}
+\item \underline{Induktionsschritt:} Sei $n\in \mathbb{N}_0$ beliebig fixiert
+	\begin{itemize}
+	\item \underline{Induktionshypothese:} Es gelte $f\ n=\frac{n*(n+1)}{2}$
+	\item \underline{Induktionsbehauptung:} Dann gilt auch $f\ (n+1)=\frac{(n+1)*((n+1)+1)}{2}$
+	\item \underline{Beweis:}
+	\begin{itemize}
+		\item \underline{Fall $n=1$:}
+		\begin{equation*}
+			f\ 1\stackrel{Def.\ f}{=}1=\frac{1*(1+1)}{2}
+		\end{equation*}
+		\item \underline{Fall $n>1$:}
+	\begin{align*}
+		f\ (n+1)&\stackrel{Def.\ f}=n+1+f\ n\stackrel{I.H.}{=}n+1+\frac{n*(n+1)}{2}=n+1+\frac{n^2+n}{2}=\frac{2n+2+n^2+n}{2}\\
+		&=\frac{(n^2+2n+1)+n+1}{2}=\frac{(n+1)^2+n+1}{2}=\frac{(n+1)*((n+1)+1)}{2}
+	\end{align*}
+	\end{itemize}
+	\end{itemize}
+\end{itemize}
+\end{proof}
+\subsection{Die Kunst der Abstrahierung}
+Gegeben sind folgende OCaml-Definitionen
+\begin{align*}
+	let\ rec\ append\ a\ b &= match\ a\ with\ []\rightarrow b\ |\ x::xs\rightarrow x::append\ xs\ b\\
+	let\ (@)&=append\\
+	let\ rec\ aux\ a &= function\ []\rightarrow a\ |\ x::xs\rightarrow aux\ (x::a)\ xs\ in\ aux\ []\ l\\
+	let\ rec\ rev &= function\ []\rightarrow []\ |\ x::xs\rightarrow rev\ xs\ @\ [x]
+\end{align*}
+und außerdem folgendes Lemma
+\begin{equation}
+	a\ @\ (b\ @\ c)=(a\ @\ b)\ @\ c \label{app_lem}
+\end{equation}
+Zeigen Sie, unter der Voraussetzung, dass alle Funktionsaufrufe terminieren, dass für alle Listen l gilt:
+\begin{equation*}
+	aux\ []\ l=rev\ l
+\end{equation*}
+\begin{proof}
+Wir sehen, dass die Definitionen von rev und aux rekursiv von der Liste l abhängen und diese in jedem Schritt verkleinert wird. Daher zeigen wir die Aussage mit Induktion über die Länge der Liste mit $n\coloneqq length\ l$.
+\begin{itemize}
+\item \underline{Induktionsbasis:} Sei n=0, dann gilt $l=[]$ und
+\begin{equation*}
+	aux\ []\ []\stackrel{Def.\ aux}{=}[]\stackrel{Def.\ rev}{=}rev\ []
+\end{equation*}
+\item \underline{Induktionsschritt:} Sei $n\in \mathbb{N}_0$ beliebig fixiert, l eine beliebige Liste mit $n=length\ l$ und x ein beliebiges Element, sodass $n+1=length\ (x::l)$.
+	\begin{itemize}
+	\item \underline{Induktionshypothese:} Es gelte $aux\ []\ l=rev\ l$
+	\item \underline{Induktionsbehauptung:} Dann gilt auch $aux\ []\ (x::l)=rev\ (x::l)$
+	\item \underline{Beweis:}
+	\begin{align*}
+		aux\ []\ (x::l)\stackrel{Def.\ aux}{=}aux\ [x]\ l\quad\lightning
+	\end{align*}
+	Hier stehen wir vor einem Problem. Unsere Induktionshypothese gilt nur für $aux\ []\ l=rev\ l$, nicht aber für $aux\ [x]\ l$. Dies passiert häufig in solchen Beweisen. Wir müssen die Hypothese verallgemeinern, um den Beweis durchführen zu können.
+	\end{itemize}
+\end{itemize}
+Neuer Versuch: Wir zeigen zunächst $aux\ a\ l = rev\ l\ @\ a$ über die Länge der Liste mit $n\coloneqq length\ l$ und beliebigen Listen a.
+\begin{itemize}
+\item \underline{Induktionsbasis:} Sei n=0, dann gilt $l=[]$ und
+\begin{equation*}
+	aux\ a\ []\stackrel{Def.\ aux}{=}a\stackrel{Def.\ @}{=}[]\ @\ a\stackrel{Def.\ rev}{=}rev\ []\ @\ a
+\end{equation*}
+\item \underline{Induktionsschritt:} Sei $n\in \mathbb{N}_0$ beliebig fixiert, l eine beliebige Liste mit $n=length\ l$ und x ein beliebiges Element, sodass $n+1=length\ (x::l)$.
+	\begin{itemize}
+	\item \underline{Induktionshypothese:} Es gelte $aux\ a\ l=rev\ l\ @\ a$
+	\item \underline{Induktionsbehauptung:} Dann gilt auch $aux\ a\ (x::l)=rev\ (x::l)\ @\ a$
+	\item \underline{Beweis:}
+	\begin{align*}
+		aux\ a\ (x::l)&\stackrel{Def.\ aux}{=}aux\ (x::a)\ l\stackrel{I.H.}{=}rev\ l\ @\ (x::a)\\
+		&\stackrel{Def.\ @}{=}rev\ l\ @\ (x::[]\ @\ a)\stackrel{Def.\ @}{=}rev\ l\ @\ ([x]\ @\ a)\\
+		&\stackrel{Lemma~\eqref{app_lem}}{=}(rev\ l\ @\ [x])\ @\ a\stackrel{Def.\ rev}{=}rev\ (x::l)\ @\ a
+	\end{align*}
+	\end{itemize}
+\end{itemize}
+Mit dem soeben gezeigten Lemma folgt mit $a=[]$ und beliebigen Listen l
+\begin{equation*}
+	aux\ []\ l=rev\ l\ @\ []=rev\ l
+\end{equation*}
+Der Beweis der letzten Gleichheit und Lemmas~\eqref{app_lem} überlassen wir dem Leser als Übung.
+\end{proof}
+\section{Zusammenfassung und Tipps}
+Eine kleine Zusammenfassung, zu den gerade gesehenen Beweisen und ein paar Tipps:
+\begin{itemize}
+	\item Wir nehmen bei dieser Art Beweis immer an, dass alle Aufrufe terminieren
+	\item Um die Beweise durchführen zu können, benötigen wir häufig Induktion. Über welche Variable dabei die Induktion durchgeführt wird, liegt daran, worüber die Funktion, über die der Beweis eine Aussage trifft, definiert ist.
+	Die Induktionsvariable muss dabei immer kleiner werden, ansonsten können wir nicht induktiv argumentieren.
+	\item Bei Funktionen mit mehreren Parametern ist zunächst herauszufinden, über welche der Parameter die Funktion rekursiv definiert ist. Sollte es mehr als ein Parameter sein, so muss man etwas tricksen und z.B.\ die Induktion über die Summe der (Längen) der beiden Parameter führen. 
+	\item Manchmal müssen wir die übrigen Parameter beliebig setzen, um die Induktionshypothese im Induktionsschritt verwenden zu können (vgl.\ Beispiel~2.2).
+	\item Definitionen von Funktionen können vorwärts als auch rückwärts verwendet werden (``='' ist schließlich symmetrisch).
+	\item Manchmal ist es hilfreich, nicht zwanghaft zu versuchen, von einer Seite auf die andere umzuformen, sondern beide Seiten getrennt so weit wie möglich zu vereinfachen, um sich dann in der Mitte zu treffen.
+	\item Sachen, die bereits bewiesen wurden, können wir wiederverwenden. Dies ist vor allem in Klausuren wichtig, in denen Lemmata gegeben sind und nach mehreren Beweise gefragt wird. Meist muss man in einem Schritt dann ein vorher erzieltes Ergebnis (oder ein gegebenes Lemma) verwenden.
+\end{itemize}
+
+\section{Übungen}
+2016/17
+\begin{itemize}
+\item Blatt 13
+\end{itemize}
+2015/16
+\begin{itemize}
+\item Blatt 12
+\end{itemize}
+2016/equivalence\_proofs\\
+In den Vorlesungsfolien sind auch 2, 3 Beweise.\\
+Ansonsten: Einfach selber Programme schreiben und diese beweisen! :)
+\end{sloppypar}
+\end{document}
