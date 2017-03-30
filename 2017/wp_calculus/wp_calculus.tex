@@ -476,23 +476,26 @@ Um $A\equiv B$ zu überprüfen, überprüfe ob sowohl $A\Rightarrow B$ als auch 
 2. $(a),(c),(d),(e),(g),(h)$\\
 Beachte, immer wenn ein Programmpunkt nicht erreicht wird, kann die Annotation dort beliebig sein. Beispielsweise terminiert für $x=0$ das Programm nicht, der Endpunkt wird daher nicht erreicht und die Annotation ist somit hinreichend.\\
 
-3. Wir bemerken zunächst, dass l in jedem zweiten Schritt kleiner wird und wir daher für $l\ge0$ genau $2*l+2$ Schleifeniterationen benötigen, bis zum Verlassen der Schleife. Wir setzen daher initial $r=2*l$ und verringern r in jeder Schleifeniteration um eins. Wir zeichnen nun den Kontrollflussgraphen.
+3. \begin{proof}Wir bemerken zunächst, dass l in jedem zweiten Schritt kleiner wird und wir daher für $l\ge0$ genau $2*l+2$ Schleifeniterationen benötigen, bis zum Verlassen der Schleife. Wir setzen daher initial $r=2*l$ und verringern r in jeder Schleifeniteration um eins. Wir zeichnen nun den Kontrollflussgraphen.\\
 \begin{figure}[ht]
 	\includegraphics[height=10cm]{exercise_3.png}
 	\centering
 \end{figure}
-Für die Invariante bemerken wir (nachdem wir uns z.B. für $l=5$ für die ersten paar Schleifeniterationen tabellarisch alle Variablenwerte aufschreiben), dass gilt $(b\wedge r=2*l) \vee (\neg b\wedge r=2*l-1)$. Da nun r von l abhängt und wir später eine untere Schranke für r angeben müssen (da r streng monoton fällt), müssen wir auch die Größe von l in unsere Invariante aufnehmen (dabei darf der Fall $l<0$ nicht vergessen werden). Wir setzen also 
+
+Für die Invariante bemerken wir (nachdem wir uns z.B. für $l=5$ die Variablenwerte in den ersten paar Schleifeniterationen tabellieren), dass stets $(b\wedge r=2*l) \vee (\neg b\wedge r=2*l-1)$ gilt. 
+Da nun r von l abhängt und wir später eine untere Schranke für r angeben müssen (da r streng monoton fällt), müssen wir auch die Größe von l in unsere Invariante aufnehmen (dabei darf der Fall $l<0$ nicht vergessen werden). Wir setzen also 
 \begin{equation*}
 	I\coloneqq \left(\left( b\wedge r=2*l\right) \vee \left(\neg b\wedge r=2*l-1\right)\right)\wedge l\ge -1 \vee l\le -1
 \end{equation*}
-und da wir nur zeigen sollen, dass das Programm terminiert, setzen wir weiters $J\coloneqq true$. Wir überprüfen nun die lokale konsistenz.
+Wichtig ist, dass wir den Fall $l\le -1$ sowohl im Fall, wenn ein positiver Wert für l ursprünglich eingelesen wurde (nach der letzten Schleifeniteration), als auch im Fall, wenn ein negativer Wert für l eingelesen wurde (nämlich $l=-1$), antreffen können.\\
+Da wir nur zeigen sollen, dass das Programm terminiert, setzen wir weiters einfach $J\coloneqq true$. Wir überprüfen nun die lokale Konsistenz.
 \begin{align*}
-WP\llbracket r=r-1;\rrbracket(i)&\equiv \left(\left( b\wedge r-1=2*l\right) \vee \left(\neg b\wedge r-1=2*l-1\right)\right)\wedge l\ge -1 \vee l\le -1\\
+WP\llbracket r=r-1;\rrbracket(I)&\equiv \left(\left( b\wedge r-1=2*l\right) \vee \left(\neg b\wedge r-1=2*l-1\right)\right)\wedge l\ge -1 \vee l\le -1\\
 &\equiv \left(\left( b\wedge r=2*l+1\right) \vee \left(\neg b\wedge r=2*l\right)\right)\wedge l\ge -1 \vee l\le -1\\
 &\Leftarrow \left(\left( b\wedge r=2*l+1\right) \vee \left(\neg b\wedge r=2*l\right)\right)\wedge l\ge -1\eqqcolon H
 \end{align*}
-Die letzte Implikation nehmen wir vor, da wir den Fall $l\le -1$ nie innerhalb unserer Schleife antreffen werden und wir ihn deshalb hier voraussehend verwerfen (er wird dann bei der Berechnung von $WP\llbracket l\ge 0\rrbracket(J,D)$ wieder hinzugefügt werden, allerdings würde er innerhalb der Schleife bei der Verifikation der unteren Grenze für r stören).\\
-Insbesondere müssen wir nun überprüfen, ob $H\Rightarrow r>r-1$ gilt, um die Monotonitonie von r zu verifizieren. Mit $r>r-1\equiv0>-1\equiv true$ folgt die Implikation trivialerweise.
+Die letzte Implikation nehmen wir vor, da wir den Fall $l\le -2$ nie innerhalb unserer Schleife antreffen werden und wir ihn deshalb hier voraussehend verwerfen (er wird dann bei der Berechnung von $WP\llbracket l\ge 0\rrbracket(J,D)$ wieder hinzugefügt werden, allerdings würde er innerhalb der Schleife bei der Verifikation der unteren Grenze für r stören).\\
+Insbesondere müssen wir nun überprüfen, ob $H\Rightarrow r>r-1$ gilt, um die Monotonie von r zu verifizieren. Mit $r>r-1\equiv0>-1\equiv true$ folgt die Implikation trivialerweise. Wir rechnen also weiter.
 \begin{align*}
 WP\llbracket b=false;\rrbracket(H)&\equiv \left(\left( false\wedge r=2*l+1\right) \vee \left(\neg false\wedge r=2*l\right)\right)\wedge l\ge -1\\
 &\equiv r=2*l\wedge l\ge -1\eqqcolon F\\
@@ -500,23 +503,24 @@ WP\llbracket b=true;\rrbracket(H)&\equiv \left(\left( true\wedge r=2*l+1\right) 
 &\equiv r=2*l+1\wedge l\ge -1\eqqcolon G\\
 WP\llbracket l=l-1;\rrbracket(G)&\equiv r=2*(l-1)+1\wedge l-1\ge -1\\
 &\equiv r=2*l-1\wedge l\ge 0\eqqcolon E\\
-WP\llbracket b\rrbracket(E,F)&\equiv \neg b \wedge r=2*l-1\wedge l\ge 0 \vee b \wedge r=2*l\wedge l\ge -1\eqqcolon D
+WP\llbracket b\rrbracket(E,F)&\equiv (\neg b \wedge r=2*l-1\wedge l\ge 0) \vee (b \wedge r=2*l\wedge l\ge -1)\eqqcolon D
 \end{align*}
-Insbesondere gilt $D\Rightarrow r\ge-2$, somit haben wir eine untere Schranke für r.
+Insbesondere gilt $D\Rightarrow r\ge-2$, somit haben wir eine untere Schranke für r. Nun zum letzten Schritt der Schleife.
 \begin{align*}
-WP\llbracket l\ge 0\rrbracket(J,D)&\equiv l\le -1 \vee l\ge 0 \wedge \left(\neg b \wedge r=2*l-1\wedge l\ge 0 \vee b \wedge r=2*l\wedge l\ge -1\right)\\
-&\equiv l\le -1 \vee \neg b \wedge r=2*l-1\wedge l\ge 0 \vee b \wedge r=2*l\wedge l\ge 0\\
+WP\llbracket l\ge 0\rrbracket(J,D)&\equiv l\le -1 \vee l\ge 0 \wedge \left(\left(\neg b \wedge r=2*l-1\wedge l\ge 0\right) \vee \left(b \wedge r=2*l\wedge l\ge -1\right)\right)\\
+&\equiv l\le -1 \vee (\neg b \wedge r=2*l-1\wedge l\ge 0) \vee (b \wedge r=2*l\wedge l\ge 0)\\
 &\Leftarrow l\le -1 \vee l\ge -1 \wedge\left(\left(\neg b \wedge r=2*l-1\right) \vee \left(b \wedge r=2*l \right)\right)\equiv I
 \end{align*}
 Unsere Schleife ist also lokal konsistent. Wir gehen noch zum Startknoten.
 \begin{align*}
-WP\llbracket r=2*i;\rrbracket(I)&\equiv l\le -1 \vee l\ge -1 \wedge\left(\left(\neg b \wedge 2*l=2*l-1\right) \vee \left(b \wedge 2*l=2*l \right)\right)\\
+WP\llbracket r=2*l;\rrbracket(I)&\equiv l\le -1 \vee l\ge -1 \wedge\left(\left(\neg b \wedge 2*l=2*l-1\right) \vee \left(b \wedge 2*l=2*l \right)\right)\\
 &\equiv l\le -1 \vee l\ge -1 \wedge\left(\left(\neg b \wedge false\right) \vee \left(b \wedge true \right)\right)\\
 &\equiv l\le -1 \vee l\ge -1 \wedge b\eqqcolon C\\
 WP\llbracket b=true;\rrbracket(C)&\equiv l\le -1 \vee l\ge -1 \wedge true\\
-&\equiv l\le -1 \vee l\ge -1\eqqcolon B\\
-WP\llbracket l=read();\rrbracket(B)&\equiv \forall l.\ l\le -1 \vee l\ge -1 \equiv \forall l.\ true\equiv true\eqqcolon A
+&\equiv l\le -1 \vee l\ge -1\equiv true\eqqcolon B\\
+WP\llbracket l=read();\rrbracket(B)&\equiv \forall l.\ true\equiv true\eqqcolon A
 \end{align*}
 Somit terminiert das Programm für alle Eingaben.
+\end{proof}
 \end{sloppypar}
 \end{document}
