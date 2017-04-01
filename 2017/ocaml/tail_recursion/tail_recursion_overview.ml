@@ -21,7 +21,7 @@ let fib_tail n = let rec fib_aux (ppred,pred) n' = if n'=n then ppred+pred
 (* Achtung: Diese Funktion ist nicht endrekursiv! Der rekursive Aufruf von not_tail_rec ist zwar endrekursiv,
    jedoch verwendet die Funktion eine nicht endrekursive Funktion (fib)! 
    Eine Funktion ist nur Endrekursiv, wenn ihr (möglicher) rekursiver Aufruf die letze Operation ist und
-   jede verwendete Funktion endrekursiv ist. *)
+   jede verwendete Funktion endrekursiv ist. Die Stacktiefe jedes Funktionaufrufes muss durch eine Konstante begrenzbar sein. *)
 let rec not_tail_rec = function x when x<= 2 -> x
 	| x -> let r = fib x in not_tail_rec (-r)
 
