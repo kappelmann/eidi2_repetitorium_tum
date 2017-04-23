@@ -1,6 +1,9 @@
 # EIDI2 Revision Course - Technical University of Munich (TUM)
 This repository is intended for the EIDI 2 revision courses (Einführung in die Informatik 2 - Repetitorien) 2016 and 2017 at the Technical University of Munich (TUM).
 
+### How should I prepare for the exam?
+Use the schedule 2017/README.
+
 ### Contact
 kevin@kappelmann.me
 
