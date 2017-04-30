@@ -4,6 +4,9 @@ This repository is intended for the EIDI 2 revision courses (Einführung in die 
 ### How should I prepare for the exam?
 Use the schedule 2017/README.
 
+### I found a mistake/typo
+Please open an issue or pull request or contact me by email.
+
 ### Contact
 kevin@kappelmann.me
 
