@@ -279,7 +279,7 @@ WP\llbracket write(s);\rrbracket(G)\equiv G\eqqcolon F
 Jetzt kommt der schwierige Teil: Wir sind bei der Schleife angelangt und können nun nicht einfach mehr sequentiell unsere Zusicherungen berechnen, sondern müssen eine geeignete Schleifeninvariante I finden. Um dies zu tun, gibt es ein paar Tipps:
 \begin{itemize}
 \item Die Schleifeninvariante hängt im Normalfall irgendwie von der Laufvariable ab.
-\item Oft hängt die Invariante stark mit der Aussage am ``Ausstiegspunkt'' (hier E) zusammen und beschreibt diesen in Abhängigkeit der Laufvariable (hier i).
+\item Oft hängt die Invariante stark mit der Aussage am ``Ausstiegspunkt'' (hier F) zusammen und beschreibt diesen in Abhängigkeit der Laufvariable (hier i).
 \item Es ist besser, eine gültige Aussage zu viel in die Invariante zu packen, als zu wenig (z.B. scheint hier $i\ge 0$ vielleicht zunächst überflüssig; manchmal ist dies aber eine entscheidende Notwendigkeit in der Verifikation).
 \item Wenn man keine gute Vermutung hat, hilft es oft sich den Programmablauf (d.h.\ den Verlauf der Variablenwerte) für eine Beispieleingabe aufzuschreiben.
 \end{itemize}
