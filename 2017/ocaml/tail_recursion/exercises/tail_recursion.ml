@@ -12,12 +12,6 @@ let append_3 x y = x@y
 let rec gauss = function x when x>1 -> gauss (x-1)+x
 	| x -> x
 
-let gauss n = (n*(n+1))/2
-
-let gauss n = let rec aux acc = function n when n>0 -> aux (acc+n) (n-1)
-        | n -> acc
-        in aux 0 n
-
 let rec h e l p = match p with 0 -> (p+1)
 	| x -> e*l*h e l (x-1)
 
