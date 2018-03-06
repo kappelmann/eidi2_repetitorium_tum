@@ -6,7 +6,7 @@ let rec fib n = let rec aux_fib n' = if n'=0 then (0,0)
 	in snd (aux_fib n)
 
 (* Ein Aufruf von fib 1000000 würde nun 1000000 rekursive Aufrufe benötigen. Da muss jedem
-   Informatiker sofort das Herz aufschreien, denn unser Stack würde dann ebenfalls eine Tiefe 
+   Informatik Student sofort das Herz aussetzen, denn unser Stack würde dann ebenfalls eine Tiefe 
    von mindestens 1000000 benötigen --> Stackoverflow/OutOfMemory exceptions.
    In imperativen Programmiersprachen können wir häufig Rekursion durch Verwendung von Schleifen vermeiden.
    Wie soll das aber in funktionalen Programmiersprachen funktionieren? 
@@ -16,7 +16,6 @@ let rec fib n = let rec aux_fib n' = if n'=0 then (0,0)
 let fib_tail n = let rec fib_aux (ppred,pred) n' = if n'=n then ppred+pred 
 	else fib_aux (pred,ppred+pred) (n'+1) in
 	if n<=1 then n else fib_aux (0,1) 2
-(* Wer mir nicht glaubt, dass das viel Unterschied macht, soll einfach mal fib 1000000 und fib_tail 1000000 laufen lassen :p *)
 
 (* Achtung: Diese Funktion ist nicht endrekursiv! Der rekursive Aufruf von not_tail_rec ist zwar endrekursiv,
    jedoch verwendet die Funktion eine nicht endrekursive Funktion (fib)! 
